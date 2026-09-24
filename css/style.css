@@ -266,6 +266,20 @@ p { text-wrap: pretty; }
   margin-bottom: var(--sp-7);
 }
 
+/* UUPM editorial-grid-magazine: penomoran bab mono di atas eyebrow */
+.chapter {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--txt-500);
+  margin-bottom: 0.7rem;
+}
+
+.section--dark .chapter { color: var(--txt-300); }
+
 /* ================= BUTTONS ================= */
 .btn {
   display: inline-flex;
@@ -286,6 +300,17 @@ p { text-wrap: pretty; }
              color var(--t-med) var(--ease);
   will-change: transform;
 }
+
+/* UUPM micro-interaction: panah ikut geser + fade saat hover */
+.btn-arrow {
+  width: 1.05em;
+  height: 1.05em;
+  flex: none;
+  transition: transform var(--t-med) var(--ease),
+              opacity var(--t-fast) var(--ease);
+}
+
+.btn:hover .btn-arrow { transform: translateX(3px); }
 
 .btn:active { transform: translateY(1px) scale(0.99); }
 
@@ -1547,7 +1572,10 @@ p { text-wrap: pretty; }
 .footer-brand .brand { color: #fff; margin-bottom: var(--sp-3); }
 
 .footer-brand p {
-  font-size: 0.9375rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.7;
   color: var(--txt-300);
   max-width: 34ch;
 }
@@ -1943,5 +1971,4 @@ p { text-wrap: pretty; }
   border: 0;
 }
 
-.text-center { text-align: center; }
 .mt-4 { margin-top: var(--sp-4); }
