@@ -1488,6 +1488,44 @@ p { text-wrap: pretty; }
 .field--mt { margin-top: var(--sp-4); }
 .form-row--mt { margin-top: var(--sp-4); }
 
+/* UUPM Forms/Error Placement: pesan error inline di bawah input,
+   terhubung ke field via .is-invalid */
+.err {
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+  min-height: 0;
+  color: var(--txt-500);
+  transition: color var(--t-fast) var(--ease);
+}
+
+.field.is-invalid .err {
+  color: var(--pink-400);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.field.is-invalid .err::before {
+  content: "!";
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.1em;
+  height: 1.1em;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+.field.is-invalid input,
+.field.is-invalid select,
+.field.is-invalid textarea {
+  border-color: var(--pink-400);
+}
+
 /* copy kecil di bawah heading media (video section) */
 .media-copy {
   color: var(--txt-300);
@@ -1533,12 +1571,8 @@ p { text-wrap: pretty; }
 .field .err {
   font-size: var(--fs-xs);
   font-weight: 600;
-  color: #c0392b;
   min-height: 1em;
 }
-
-.field.is-invalid input,
-.field.is-invalid select { border-color: #c0392b; }
 
 .form-actions {
   display: flex;
