@@ -43,6 +43,13 @@
   --warm-ring-deep: #c2c0b6;
   --whisper: rgba(0, 0, 0, 0.05) 0px 4px 24px;
 
+  /* ---- UUPM "Nature Distilled": earthy warm layer ---- */
+  --terracotta: #c67b5c;
+  --sand-beige: #d4c4a8;
+  --warm-clay: #b5651d;
+  --soft-cream: #f5f0e1;
+  --olive-green: #6b7b3c;
+
   /* ---- Surface semantics ---- */
   --bg: var(--cream-50);
   --surface: var(--white);
@@ -56,6 +63,7 @@
 
   /* ---- Tipografi ---- */
   --font-display: "Playfair Display", "Georgia", "Times New Roman", serif;
+  --font-display-sc: "Playfair Display SC", "Playfair Display", "Georgia", serif;
   --font-body: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
   --font-mono: "Space Mono", "Consolas", monospace;
 
@@ -127,6 +135,23 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  position: relative;
+}
+
+/* UUPM "Nature Distilled": grain texture overlay via inline SVG noise.
+   memberi tekstur kertas/film — menghilangkan kesan "digital flat" AI slop */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::after { display: none; }
 }
 
 img,
@@ -204,7 +229,7 @@ p { text-wrap: pretty; }
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--pink-600);
+  color: var(--warm-clay);
 }
 
 .section--dark .eyebrow { color: var(--pink-400); }
@@ -220,6 +245,13 @@ p { text-wrap: pretty; }
 .section-title {
   font-size: var(--fs-h2);
   margin-block: var(--sp-3) var(--sp-4);
+}
+
+/* UUPM "Restaurant Menu" pairing: small-caps serif untuk section heading */
+.section-head .section-title {
+  font-family: var(--font-display-sc);
+  font-weight: 600;
+  letter-spacing: 0.01em;
 }
 
 .section-lead {
@@ -715,7 +747,7 @@ p { text-wrap: pretty; }
 /* gambar utama: radius besar ala Claude hero container */
 .about-media-main {
   width: 100%;
-  border-radius: 24px;
+  border-radius: 24px 24px 24px 6px;
   box-shadow: var(--whisper);
   display: block;
 }
@@ -728,7 +760,7 @@ p { text-wrap: pretty; }
   width: 38%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
-  border-radius: 16px;
+  border-radius: 16px 16px 6px 16px;
   border: 4px solid var(--bg);
   transform: rotate(-3deg);
   box-shadow: var(--sh-3);
@@ -770,6 +802,17 @@ p { text-wrap: pretty; }
   font-size: 1.0625rem;
   font-style: italic;
   color: var(--txt-700);
+}
+
+/* UUPM editorial-grid-magazine: drop cap pada paragraf pembuka about */
+.about-content > p.section-lead + p::first-letter {
+  font-family: var(--font-display);
+  font-size: 3.4em;
+  line-height: 0.82;
+  font-weight: 700;
+  float: left;
+  margin: 0.06em 0.1em 0 -0.04em;
+  color: var(--warm-clay);
 }
 
 .features {
