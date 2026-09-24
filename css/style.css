@@ -220,6 +220,41 @@ p { text-wrap: pretty; }
   color: var(--cream-100);
 }
 
+/* UUPM Nature Distilled: menu di permukaan cream hangat (food warmth) */
+.section--cream {
+  background: var(--cream-100);
+  color: var(--txt-900);
+}
+
+.section--cream .eyebrow { color: var(--warm-clay); }
+.section--cream .chapter { color: var(--txt-500); }
+.section--cream .section-head { border-top-color: var(--border); }
+.section--cream .section-lead { color: var(--txt-700); }
+
+/* elemen menu: beralih dari asumsi dark ke cream */
+.section--cream .menu-list { border-top-color: var(--border); }
+.section--cream .dish-card { border-bottom-color: var(--border); }
+.section--cream .dish-card:hover { background: rgba(24, 42, 77, 0.045); }
+.section--cream .dish-desc { color: var(--txt-700); }
+.section--cream .dish-top::after { border-bottom-color: rgba(24, 42, 77, 0.28); }
+
+.section--cream .dish-price { color: var(--warm-clay); }
+.section--cream .dish-tag--hot { color: var(--warm-clay); border-color: rgba(181, 101, 29, 0.4); }
+.section--cream .dish-meta { color: var(--txt-500); }
+.section--cream .dish-idx { color: var(--warm-clay); }
+
+/* tombol pesanan: border kuat supaya kontras di cream (bukan ghost) */
+.section--cream .dish-order {
+  color: var(--ink-800);
+  border-color: rgba(24, 42, 77, 0.45);
+  background: rgba(255, 255, 255, 0.55);
+}
+.section--cream .dish-order:hover {
+  color: #fff;
+  border-color: var(--warm-clay);
+  background: var(--warm-clay);
+}
+
 .eyebrow {
   display: inline-flex;
   align-items: center;
@@ -510,6 +545,15 @@ p { text-wrap: pretty; }
   margin-left: 0.5rem;
   padding: 0.65em 1.35em;
   font-size: 0.875rem;
+}
+
+/* di header cream: clay hangat, bukan pink dingin (konsistensi Nature Distilled) */
+.site-header.is-scrolled .nav-cta {
+  background: var(--warm-clay);
+  box-shadow: none;
+}
+.site-header.is-scrolled .nav-cta:hover {
+  background: #9a5518;
 }
 
 .nav-toggle {
@@ -996,6 +1040,7 @@ p { text-wrap: pretty; }
   color: var(--pink-400);
   opacity: 0.85;
   min-width: 2ch;
+  align-self: center;
 }
 
 .dish-thumb {
@@ -1147,6 +1192,24 @@ p { text-wrap: pretty; }
   -ms-overflow-style: none;
 }
 
+/* UUPM polish: scrollbar default terlalu terang di dark section */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
+}
+
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover { background-color: rgba(255, 255, 255, 0.3); }
+*::-webkit-scrollbar-track { background: transparent; }
+
+/* filmstrip tetap tanpa scrollbar (custom counter sebagai affordance) */
+.filmstrip-frames { scrollbar-width: none; }
 .filmstrip-frames::-webkit-scrollbar { display: none; }
 
 .frame {
