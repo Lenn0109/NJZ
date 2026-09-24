@@ -264,6 +264,8 @@ p { text-wrap: pretty; }
 
 .section-head {
   margin-bottom: var(--sp-7);
+  padding-top: var(--sp-5);
+  border-top: 1px solid var(--border);
 }
 
 /* UUPM editorial-grid-magazine: penomoran bab mono di atas eyebrow */
@@ -279,6 +281,8 @@ p { text-wrap: pretty; }
 }
 
 .section--dark .chapter { color: var(--txt-300); }
+
+.section--dark .section-head { border-top-color: var(--line-dark); }
 
 /* ================= BUTTONS ================= */
 .btn {
@@ -407,15 +411,37 @@ p { text-wrap: pretty; }
   height: 38px;
   flex: none;
   border-radius: 11px;
-  background: linear-gradient(140deg, var(--denim-700), var(--pink-500));
+  background: transparent;
+  border: 1.5px solid var(--txt-900);
   display: grid;
   place-items: center;
-  font-family: var(--font-body);
-  font-size: 0.875rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  color: #fff;
-  box-shadow: 0 4px 14px rgba(39, 75, 128, 0.35);
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0.01em;
+  color: var(--txt-900);
+  transition: background var(--t-med) var(--ease),
+              color var(--t-med) var(--ease),
+              border-color var(--t-med) var(--ease);
+}
+
+.brand:hover .brand-mark {
+  background: var(--txt-900);
+  color: var(--cream-50);
+  border-color: var(--txt-900);
+}
+
+/* di permukaan gelap: outline cream */
+.site-footer .brand-mark {
+  border-color: var(--cream-200);
+  color: var(--cream-200);
+}
+
+.site-footer .brand:hover .brand-mark {
+  background: var(--cream-200);
+  color: var(--ink-900);
+  border-color: var(--cream-200);
 }
 
 .brand-name { line-height: 1; }
@@ -1818,22 +1844,24 @@ p { text-wrap: pretty; }
 }
 
 .preloader-mark {
-  width: 64px;
-  height: 64px;
-  border-radius: 18px;
-  background: linear-gradient(140deg, var(--denim-600), var(--pink-500));
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: transparent;
+  border: 1.5px solid var(--cream-200);
   display: grid;
   place-items: center;
   font-family: var(--font-display);
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #fff;
-  animation: pulse 1.4s var(--ease) infinite;
+  font-size: 1.375rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--cream-100);
+  animation: pulse 1.8s var(--ease) infinite;
 }
 
 @keyframes pulse {
-  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(236, 106, 165, 0.5); }
-  50% { transform: scale(1.06); box-shadow: 0 0 0 18px rgba(236, 106, 165, 0); }
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.96); }
 }
 
 .preloader-bar {
