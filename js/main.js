@@ -1,0 +1,231 @@
+/* =========================================================
+   NEWJEANS — Restaurant | Interactions
+   ========================================================= */
+(function () {
+  'use strict';
+
+  /* ---------- Preloader ---------- */
+  const preloader = document.getElementById('preloader');
+  window.addEventListener('load', function () {
+    if (!preloader) return;
+    setTimeout(function () {
+      preloader.classList.add('is-done');
+      document.body.style.overflow = '';
+    }, 600);
+  });
+  document.body.style.overflow = 'hidden';
+
+  /* ---------- Header scroll state ---------- */
+  const header = document.getElementById('siteHeader');
+  let ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function () {
+      if (window.scrollY > 24) header.classList.add('is-scrolled');
+      else header.classList.remove('is-scrolled');
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* ---------- Mobile nav ---------- */
+  const navToggle = document.getElementById('navToggle');
+  const nav = document.getElementById('nav');
+  navToggle.addEventListener('click', function () {
+    const open = nav.classList.toggle('is-open');
+    navToggle.setAttribute('aria-expanded', String(open));
+  });
+  nav.addEventListener('click', function (e) {
+    if (e.target.closest('.nav-link')) {
+      nav.classList.remove('is-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && nav.classList.contains('is-open')) {
+      nav.classList.remove('is-open');
+      navToggle.setAttribute('aria-expanded', 'false');
+      navToggle.focus();
+    }
+  });
+
+  /* ---------- Scroll spy (active nav link) ---------- */
+  const navLinks = Array.prototype.slice.call(nav.querySelectorAll('.nav-link'));
+  const sections = navLinks
+    .map(function (l) { return document.querySelector(l.getAttribute('href')); })
+    .filter(Boolean);
+  const spy = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      navLinks.forEach(function (l) {
+        l.classList.toggle('is-active', l.getAttribute('href') === '#' + entry.target.id);
+      });
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  sections.forEach(function (s) { spy.observe(s); });
+
+  /* ---------- Reveal on scroll ---------- */
+  const revealables = document.querySelectorAll(
+    '.section-head, .about-media, .about-content, .feature, .dish-card, .testi-card, .contact-card, .form-card, .video-frame, .reserve-info, .marquee, .filmstrip'
+  );
+  revealables.forEach(function (el, i) {
+    el.classList.add('reveal');
+    el.style.setProperty('--delay', (i % 4) * 90 + 'ms');
+  });
+  const revealObs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        revealObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  revealables.forEach(function (el) { revealObs.observe(el); });
+
+  /* ---------- Menu filter ---------- */
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const dishCards = document.querySelectorAll('.dish-card');
+  filterBtns.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      filterBtns.forEach(function (b) { b.classList.remove('is-active'); });
+      btn.classList.add('is-active');
+      const f = btn.dataset.filter;
+      dishCards.forEach(function (card) {
+        const show = f === 'all' || card.dataset.cat === f;
+        card.classList.toggle('is-hidden', !show);
+      });
+    });
+  });
+
+  /* ---------- Toast ---------- */
+  const toastStack = document.getElementById('toastStack');
+  function toast(title, msg) {
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.innerHTML = '<strong></strong><span></span>';
+    t.querySelector('strong').textContent = title;
+    t.querySelector('span').textContent = msg;
+    toastStack.appendChild(t);
+    setTimeout(function () {
+      t.classList.add('is-leaving');
+      setTimeout(function () { t.remove(); }, 320);
+    }, 3600);
+  }
+
+  /* ---------- Order buttons ---------- */
+  document.querySelectorAll('.dish-order').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      const name = btn.closest('.dish-card').querySelector('.dish-name').textContent;
+      toast('Ditambahkan ke pesanan', name + ' telah ditambahkan ke pesanan anda.');
+    });
+  });
+
+  /* ---------- Promo video ---------- */
+  const promo = document.getElementById('promoVideo');
+  const playBtn = document.getElementById('promoPlayBtn');
+  playBtn.addEventListener('click', function () {
+    promo.play();
+    playBtn.classList.add('is-hidden');
+  });
+  promo.addEventListener('pause', function () {
+    playBtn.classList.remove('is-hidden');
+  });
+  promo.addEventListener('play', function () {
+    playBtn.classList.add('is-hidden');
+  });
+
+  /* ---------- Reservation form ---------- */
+  const form = document.getElementById('reserveForm');
+  const today = new Date().toISOString().split('T')[0];
+  const dateInput = document.getElementById('date');
+  dateInput.min = today;
+  dateInput.value = today;
+
+  function setErr(input, msg) {
+    const field = input.closest('.field');
+    field.classList.toggle('is-invalid', Boolean(msg));
+    field.querySelector('.err').textContent = msg || '';
+  }
+
+  const rules = {
+    date: function (v) { return v ? '' : 'silakan pilih tanggal'; },
+    time: function (v) { return v ? '' : 'silakan pilih waktu'; },
+    guests: function (v) { return v ? '' : 'silakan pilih jumlah tamu'; },
+    name: function (v) { return v.trim().length >= 2 ? '' : 'nama terlalu pendek'; },
+    email: function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? '' : 'masukkan email yang valid'; }
+  };
+
+  Object.keys(rules).forEach(function (id) {
+    const input = document.getElementById(id);
+    input.addEventListener('blur', function () { setErr(input, rules[id](input.value)); });
+    input.addEventListener('input', function () {
+      if (input.closest('.field').classList.contains('is-invalid')) {
+        setErr(input, rules[id](input.value));
+      }
+    });
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    let ok = true;
+    Object.keys(rules).forEach(function (id) {
+      const input = document.getElementById(id);
+      const msg = rules[id](input.value);
+      setErr(input, msg);
+      if (msg) ok = false;
+    });
+    if (!ok) {
+      toast('Periksa formulir', 'Silakan perbaiki kolom yang ditandai.');
+      return;
+    }
+    const name = document.getElementById('name').value.trim();
+    const date = document.getElementById('date').value;
+    const time = document.getElementById('time').value;
+    const guests = document.getElementById('guests').value;
+    toast('Reservasi terkonfirmasi', guests + ' tamu · ' + date + ' pukul ' + time + '. Detail dikirim ke ' + name + '.');
+    form.reset();
+    dateInput.value = today;
+  });
+
+  /* ---------- Filmstrip counter ---------- */
+  const fstrip = document.querySelector('.filmstrip-frames');
+  const fcount = document.querySelector('.filmstrip-count');
+  if (fstrip && fcount) {
+    const frames = fstrip.querySelectorAll('.frame');
+    const pad = String(frames.length).padStart(2, '0');
+    let fTicking = false;
+    function updateCount() {
+      const center = fstrip.scrollLeft + fstrip.clientWidth / 2;
+      let idx = 0;
+      let best = Infinity;
+      frames.forEach(function (fr, i) {
+        const mid = fr.offsetLeft + fr.offsetWidth / 2;
+        const d = Math.abs(mid - center);
+        if (d < best) { best = d; idx = i; }
+      });
+      fcount.textContent = String(idx + 1).padStart(2, '0') + ' / ' + pad;
+      fTicking = false;
+    }
+    fstrip.addEventListener('scroll', function () {
+      if (fTicking) return;
+      fTicking = true;
+      requestAnimationFrame(updateCount);
+    }, { passive: true });
+    updateCount();
+  }
+
+  /* ---------- Back to top ---------- */
+  const backTop = document.getElementById('backTop');
+  window.addEventListener('scroll', function () {
+    backTop.classList.toggle('is-visible', window.scrollY > 480);
+  }, { passive: true });
+  backTop.addEventListener('click', function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  /* ---------- Footer year ---------- */
+  const yr = document.querySelector('.footer-bottom p');
+  if (yr) yr.innerHTML = '&copy; ' + new Date().getFullYear() + ' NewJeans Restoran. Hak cipta dilindungi.';
+})();
