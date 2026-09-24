@@ -68,9 +68,9 @@
   --accent: var(--pink-500);
   --accent-2: var(--denim-600);
 
-  /* ---- Tipografi ---- */
-  --font-display: "Playfair Display", "Georgia", "Times New Roman", serif;
-  --font-display-sc: "Playfair Display", "Georgia", serif;
+  /* ---- Tipografi (2 keluarga: Montserrat heading + Plus Jakarta Sans body) ---- */
+  --font-display: "Montserrat", "Segoe UI", system-ui, sans-serif;
+  --font-display-sc: "Montserrat", "Segoe UI", system-ui, sans-serif;
   --font-body: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
   --font-mono: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
 
@@ -191,9 +191,9 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
-  font-weight: 700;
-  line-height: 1.12;
-  letter-spacing: -0.02em;
+  font-weight: 600;
+  line-height: 1.14;
+  letter-spacing: -0.012em;
   text-wrap: balance;
 }
 
@@ -286,14 +286,15 @@ p { text-wrap: pretty; }
 
 .section-title {
   font-size: var(--fs-h2);
+  font-weight: 400;
   margin-block: var(--sp-3) var(--sp-4);
 }
 
-/* UUPM "Restaurant Menu" pairing: small-caps serif untuk section heading */
+/* UUPM "Restaurant Menu" pairing: tracking lebar + medium untuk heading sans */
 .section-head .section-title {
-  font-family: var(--font-display-sc);
-  font-weight: 600;
-  letter-spacing: 0.01em;
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 .section-lead {
@@ -373,14 +374,14 @@ p { text-wrap: pretty; }
 }
 
 .btn--dark {
-  background: var(--denim-800);
-  color: var(--cream-100);
+  background: var(--warm-clay);
+  color: var(--cream-50);
 }
 
 .btn--dark:hover {
-  background: var(--denim-700);
+  background: #9a5518;
   transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(30, 58, 104, 0.35);
+  box-shadow: 0 12px 32px rgba(181, 101, 29, 0.35);
 }
 
 .btn--ghost {
@@ -449,8 +450,8 @@ p { text-wrap: pretty; }
   gap: 0.65rem;
   font-family: var(--font-display);
   font-size: 1.35rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-weight: 600;
+  letter-spacing: -0.012em;
   color: var(--ink-800);
   transition: color var(--t-med) var(--ease);
 }
@@ -616,8 +617,8 @@ p { text-wrap: pretty; }
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(100deg, rgba(13, 18, 36, 0.92) 0%, rgba(13, 18, 36, 0.72) 42%, rgba(13, 18, 36, 0.28) 72%, rgba(13, 18, 36, 0.55) 100%),
-    radial-gradient(120% 90% at 15% 100%, rgba(236, 106, 165, 0.22), transparent 60%);
+    linear-gradient(100deg, rgba(13, 10, 6, 0.96) 0%, rgba(13, 10, 6, 0.82) 46%, rgba(13, 10, 6, 0.42) 74%, rgba(13, 10, 6, 0.68) 100%),
+    radial-gradient(120% 90% at 15% 100%, rgba(236, 106, 165, 0.18), transparent 60%);
 }
 
 .hero-inner {
@@ -658,9 +659,10 @@ p { text-wrap: pretty; }
 
 .hero-title {
   font-size: var(--fs-hero);
-  line-height: 1.02;
+  font-weight: 300;
+  line-height: 1.06;
   margin-block: var(--sp-4) var(--sp-5);
-  letter-spacing: -0.035em;
+  letter-spacing: -0.028em;
 }
 
 .hero-title em {
@@ -909,6 +911,7 @@ p { text-wrap: pretty; }
   border-left: 3px solid var(--pink-500);
   font-family: var(--font-display);
   font-size: 1.0625rem;
+  font-weight: 500;
   font-style: italic;
   color: var(--txt-700);
 }
@@ -918,7 +921,7 @@ p { text-wrap: pretty; }
   font-family: var(--font-display);
   font-size: 3.4em;
   line-height: 0.82;
-  font-weight: 700;
+  font-weight: 300;
   float: left;
   margin: 0.06em 0.1em 0 -0.04em;
   color: var(--warm-clay);
@@ -951,7 +954,7 @@ p { text-wrap: pretty; }
   flex: none;
   font-family: var(--font-display);
   font-size: clamp(1.75rem, 3.2vw, 2.5rem);
-  font-weight: 400;
+  font-weight: 300;
   font-style: italic;
   line-height: 0.9;
   color: var(--pink-500);
@@ -1458,6 +1461,7 @@ p { text-wrap: pretty; }
 .testi-quote {
   font-family: var(--font-display);
   font-size: 1.0625rem;
+  font-weight: 500;
   font-style: italic;
   color: var(--txt-700);
   flex: 1;
