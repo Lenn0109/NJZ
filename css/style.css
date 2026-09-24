@@ -70,9 +70,9 @@
 
   /* ---- Tipografi ---- */
   --font-display: "Playfair Display", "Georgia", "Times New Roman", serif;
-  --font-display-sc: "Playfair Display SC", "Playfair Display", "Georgia", serif;
+  --font-display-sc: "Playfair Display", "Georgia", serif;
   --font-body: "Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
-  --font-mono: "Space Mono", "Consolas", monospace;
+  --font-mono: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
 
   /* Skala tipografi (1.25 ratio) */
   --fs-hero: clamp(2.75rem, 7vw, 5.5rem);
@@ -1234,11 +1234,12 @@ p { text-wrap: pretty; }
   justify-content: space-between;
   padding: 0.2rem 0.3rem 0.35rem;
   font-family: var(--font-mono);
-  font-size: 0.5625rem;
-  letter-spacing: 0.18em;
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
   text-transform: uppercase;
   color: var(--ink);
-  opacity: 0.75;
+  opacity: 0.6;
 }
 
 .frame-shot {
