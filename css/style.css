@@ -394,6 +394,13 @@ p { text-wrap: pretty; }
 .site-header:not(.is-scrolled) .brand,
 .site-header:not(.is-scrolled) .nav-toggle { color: #fff; }
 
+.header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
 .brand {
   display: flex;
   align-items: center;
@@ -1023,9 +1030,9 @@ p { text-wrap: pretty; }
 }
 
 .dish-tag--hot {
-  color: #fff;
-  background: rgba(217, 79, 143, 0.9);
-  border-color: transparent;
+  color: var(--amber-400);
+  background: transparent;
+  border-color: rgba(242, 189, 96, 0.45);
 }
 
 .dish-body {
@@ -1478,6 +1485,23 @@ p { text-wrap: pretty; }
   color: var(--txt-500);
 }
 
+.field--mt { margin-top: var(--sp-4); }
+.form-row--mt { margin-top: var(--sp-4); }
+
+/* copy kecil di bawah heading media (video section) */
+.media-copy {
+  color: var(--txt-300);
+  font-size: 0.9375rem;
+  max-width: 32ch;
+}
+
+/* copy kecil di kolom footer (newsletter, dll) */
+.footer-copy {
+  font-size: 0.9375rem;
+  color: var(--txt-300);
+  margin-bottom: var(--sp-3);
+}
+
 .field input,
 .field select,
 .field textarea {
@@ -1735,6 +1759,20 @@ p { text-wrap: pretty; }
   display: flex;
   flex-wrap: wrap;
   gap: var(--sp-4);
+}
+
+.footer-bottom a {
+  color: var(--txt-300);
+  text-decoration: underline;
+  text-decoration-color: rgba(164, 173, 194, 0.3);
+  text-underline-offset: 3px;
+  transition: color var(--t-fast) var(--ease),
+              text-decoration-color var(--t-fast) var(--ease);
+}
+
+.footer-bottom a:hover {
+  color: var(--cream-100);
+  text-decoration-color: var(--cream-100);
 }
 
 /* ================= TOAST ================= */
