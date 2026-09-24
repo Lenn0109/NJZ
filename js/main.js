@@ -121,7 +121,7 @@
         revealObs.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  }, { threshold: 0.05, rootMargin: '0px 0px -8% 0px' });
   revealables.forEach(function (el) { revealObs.observe(el); });
 
   /* ---------- Menu filter ---------- */
@@ -252,7 +252,7 @@
     });
   }
 
-  /* ---------- Filmstrip counter ---------- */
+  /* ---------- Filmstrip counter + scroll-driven auto advance ---------- */
   const fstrip = document.querySelector('.filmstrip-frames');
   const fcount = document.querySelector('.filmstrip-count');
   if (fstrip && fcount) {
@@ -276,6 +276,53 @@
       fTicking = true;
       requestAnimationFrame(updateCount);
     }, { passive: true });
+
+    /* auto-gulir: scroll halaman scrub strip (bawah/atas, dua arah) */
+    let userInteracting = false;
+    let interactTimer = null;
+    let scrubRaf = false;
+    const maxScroll = function () { return Math.max(0, fstrip.scrollWidth - fstrip.clientWidth); };
+
+    function scrubStrip() {
+      scrubRaf = false;
+      if (userInteracting) return;
+      const rect = fstrip.getBoundingClientRect();
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      /* progress 0 saat strip masuk dari bawah viewport, 1 saat keluar di atas */
+      const total = rect.height + vh;
+      const p = Math.min(Math.max((vh - rect.top) / total, 0), 1);
+      const max = maxScroll();
+      if (max <= 0) return;
+      const target = max * p;
+      if (Math.abs(fstrip.scrollLeft - target) < 1) return;
+      fstrip.style.scrollSnapType = 'none';
+      fstrip.scrollLeft = target;
+      updateCount();
+      requestAnimationFrame(function () { fstrip.style.scrollSnapType = ''; });
+    }
+    function scheduleScrub() {
+      if (scrubRaf) return;
+      scrubRaf = true;
+      requestAnimationFrame(scrubStrip);
+    }
+    /* sinkron: lenis + native scroll */
+    if (window.__lenis) window.__lenis.on('scroll', scheduleScrub);
+    window.addEventListener('scroll', scheduleScrub, { passive: true });
+    window.addEventListener('resize', scheduleScrub);
+    /* interaksi manual (drag/trackpad/wheel di dalam strip) menonaktifkan scrub sejenak */
+    ['wheel', 'touchstart', 'pointerdown'].forEach(function (ev) {
+      fstrip.addEventListener(ev, function () {
+        userInteracting = true;
+        fstrip.classList.add('is-user');
+        clearTimeout(interactTimer);
+        interactTimer = setTimeout(function () {
+          userInteracting = false;
+          fstrip.classList.remove('is-user');
+          scheduleScrub();
+        }, 2600);
+      }, { passive: true });
+    });
+    scheduleScrub();
     updateCount();
   }
 

@@ -1181,6 +1181,24 @@ p { text-wrap: pretty; }
   box-shadow: 0 24px 60px rgba(13, 18, 36, 0.28);
 }
 
+/* overlay fade kedua ujung: frame terpotong baca "bisa digeser", bukan bug */
+.filmstrip-fade {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: clamp(44px, 7vw, 88px);
+  z-index: 8;
+  pointer-events: none;
+}
+.filmstrip-fade--left {
+  left: 0;
+  background: linear-gradient(to right, var(--strip), rgba(27, 20, 14, 0));
+}
+.filmstrip-fade--right {
+  right: 0;
+  background: linear-gradient(to left, var(--strip), rgba(27, 20, 14, 0));
+}
+
 /* lubang sprocket atas & bawah */
 .filmstrip-sprockets {
   display: block;
@@ -1200,6 +1218,14 @@ p { text-wrap: pretty; }
   padding-block: 0.25rem;
   scrollbar-width: none;
   -ms-overflow-style: none;
+}
+
+/* auto-gulir halus saat scrub scroll halaman (di-override saat user interaksi) */
+.filmstrip-frames {
+  scroll-behavior: smooth;
+}
+.filmstrip-frames.is-user {
+  scroll-behavior: auto;
 }
 
 /* UUPM polish: scrollbar default terlalu terang di dark section */
@@ -1263,6 +1289,23 @@ p { text-wrap: pretty; }
   filter: saturate(0.92);
 }
 
+/* nomor besar di pojok kiri frame — terbaca di atas foto apa pun */
+.frame-no {
+  position: absolute;
+  top: 0.45rem;
+  left: 0.6rem;
+  z-index: 2;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--cream-100);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.65);
+  pointer-events: none;
+}
+
 .frame-shot:hover img,
 .frame-shot:focus-visible img {
   transform: scale(1.05);
@@ -1298,23 +1341,30 @@ p { text-wrap: pretty; }
   justify-content: space-between;
   gap: var(--sp-4);
   margin-top: var(--sp-4);
+  font-family: var(--font-body);
   font-size: var(--fs-xs);
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
 
 .filmstrip-count {
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   font-weight: 400;
-  letter-spacing: 0.1em;
-  color: var(--pink-600);
+  font-style: italic;
+  font-size: 1.0625rem;
+  letter-spacing: 0.02em;
+  color: var(--warm-clay);
 }
 
 @media (max-width: 640px) {
   .filmstrip-hint { justify-content: flex-end; }
+  .filmstrip-hint::before { display: none; }
 }
+
+/* counter jangan tertabrak tombol back-to-top */
+.filmstrip-count { padding-right: clamp(1.5rem, 4vw, 4rem); }
 
 /* ================= VIDEO SECTION ================= */
 .video-frame {
