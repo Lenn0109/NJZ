@@ -50,6 +50,13 @@
   --soft-cream: #f5f0e1;
   --olive-green: #6b7b3c;
 
+  /* ---- Espresso hangat (dark section, bukan blue-black) ---- */
+  --espresso-900: #1b1209;
+  --espresso-800: #241710;
+  --espresso-700: #2e1e14;
+  --espresso-line: rgba(232, 217, 166, 0.16);
+  --espresso-text: #f0e5d0;
+
   /* ---- Surface semantics ---- */
   --bg: var(--cream-50);
   --surface: var(--white);
@@ -216,8 +223,8 @@ p { text-wrap: pretty; }
 }
 
 .section--dark {
-  background: var(--surface-dark);
-  color: var(--cream-100);
+  background: var(--espresso-900);
+  color: var(--espresso-text);
 }
 
 /* UUPM Nature Distilled: menu di permukaan cream hangat (food warmth) */
@@ -267,7 +274,7 @@ p { text-wrap: pretty; }
   color: var(--warm-clay);
 }
 
-.section--dark .eyebrow { color: var(--pink-400); }
+.section--dark .eyebrow { color: var(--amber-400); }
 
 .eyebrow::before {
   content: "";
@@ -295,7 +302,7 @@ p { text-wrap: pretty; }
   max-width: 56ch;
 }
 
-.section--dark .section-lead { color: var(--txt-300); }
+.section--dark .section-lead { color: var(--cream-300); }
 
 .section-head {
   margin-bottom: var(--sp-7);
@@ -315,9 +322,9 @@ p { text-wrap: pretty; }
   margin-bottom: 0.7rem;
 }
 
-.section--dark .chapter { color: var(--txt-300); }
+.section--dark .chapter { color: var(--cream-300); }
 
-.section--dark .section-head { border-top-color: var(--line-dark); }
+.section--dark .section-head { border-top-color: var(--espresso-line); }
 
 /* ================= BUTTONS ================= */
 .btn {
@@ -482,7 +489,7 @@ p { text-wrap: pretty; }
 
 .site-footer .brand:hover .brand-mark {
   background: var(--cream-200);
-  color: var(--ink-900);
+  color: var(--espresso-900);
   border-color: var(--cream-200);
 }
 
@@ -1334,9 +1341,9 @@ p { text-wrap: pretty; }
   margin: 0;
   padding: 0.6em 1.15em 0.6em 0.9em;
   border-radius: var(--r-pill);
-  border: 1px solid rgba(255, 255, 255, 0.55);
-  background: rgba(13, 25, 36, 0.55);
-  color: #fff;
+  border: 1px solid rgba(232, 217, 166, 0.55);
+  background: rgba(27, 18, 9, 0.55);
+  color: var(--espresso-text);
   font-family: var(--font-mono);
   font-size: 0.6875rem;
   font-weight: 700;
@@ -1376,7 +1383,7 @@ p { text-wrap: pretty; }
   gap: var(--sp-5);
   margin-top: var(--sp-5);
   padding-top: var(--sp-5);
-  border-top: 1px solid var(--line-dark);
+  border-top: 1px solid var(--espresso-line);
 }
 
 /* ================= TESTIMONIALS (staggered editorial frame) ================= */
@@ -1591,7 +1598,7 @@ p { text-wrap: pretty; }
 
 /* copy kecil di bawah heading media (video section) */
 .media-copy {
-  color: var(--txt-300);
+  color: var(--cream-300);
   font-size: 0.9375rem;
   max-width: 32ch;
 }
@@ -1702,11 +1709,11 @@ p { text-wrap: pretty; }
 
 /* ================= FOOTER ================= */
 .site-footer {
-  background: var(--ink-900);
-  color: var(--cream-100);
+  background: var(--espresso-900);
+  color: var(--espresso-text);
   padding-top: var(--sp-8);
   padding-bottom: var(--sp-5);
-  border-top: 1px solid var(--line-dark);
+  border-top: 1px solid var(--espresso-line);
 }
 
 .footer-grid {
@@ -1913,6 +1920,14 @@ p { text-wrap: pretty; }
 @keyframes toastOut {
   to { opacity: 0; transform: translateX(30px) scale(0.96); }
 }
+
+.section--cream .list-check li { color: var(--txt-700); }
+.section--cream .list-check .tick {
+  background: var(--warm-clay);
+  border-color: var(--warm-clay);
+  color: var(--cream-100);
+}
+.section--cream .field label { color: var(--txt-700); }
 
 /* ================= LENIS SMOOTH SCROLL ================= */
 html.lenis,
