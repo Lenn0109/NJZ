@@ -105,10 +105,10 @@
 
     <div class="marquee">
       <div class="marquee-track">
-        <div class="marquee-item">bahan segar • produk lokal • berkelanjutan • farm to table •</div>
-        <div class="marquee-item">ketekunan • passion • seni • tak terlupakan •</div>
-        <div class="marquee-item">bahan segar • produk lokal • berkelanjutan • farm to table •</div>
-        <div class="marquee-item">ketekunan • passion • seni • tak terlupakan •</div>
+        <div class="marquee-item">bahan segar <i>/</i> produk lokal <i>/</i> berkelanjutan <i>/</i> farm to table</div>
+        <div class="marquee-item">ketekunan <i>/</i> passion <i>/</i> seni <i>/</i> tak terlupakan</div>
+        <div class="marquee-item">bahan segar <i>/</i> produk lokal <i>/</i> berkelanjutan <i>/</i> farm to table</div>
+        <div class="marquee-item">ketekunan <i>/</i> passion <i>/</i> seni <i>/</i> tak terlupakan</div>
       </div>
     </div>
 
@@ -743,9 +743,11 @@
           <p style="font-size:0.9375rem;color:var(--txt-300);margin-bottom:var(--sp-3);">
             Dapatkan info musiman dan penawaran eksklusif.
           </p>
-          <form class="footer-newsletter" onsubmit="event.preventDefault(); alert('Terima kasih telah berlangganan!');">
-            <input type="email" placeholder="email anda">
-            <button type="submit">→</button>
+          <form class="footer-newsletter" id="newsletterForm" novalidate>
+            <input type="email" placeholder="email anda" aria-label="email anda">
+            <button type="submit" aria-label="Berlangganan">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg>
+            </button>
           </form>
         </div>
       </div>

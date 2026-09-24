@@ -189,6 +189,29 @@
     dateInput.value = today;
   });
 
+  /* ---------- Newsletter ---------- */
+  const newsletter = document.getElementById('newsletterForm');
+  if (newsletter) {
+    newsletter.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const input = newsletter.querySelector('input[type="email"]');
+      const v = input.value.trim();
+      const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+      if (!ok) {
+        input.classList.add('is-invalid');
+        toast('Periksa formulir', 'Masukkan alamat email yang valid.');
+        input.focus();
+        return;
+      }
+      input.classList.remove('is-invalid');
+      toast('Berlangganan', 'Terima kasih! Info musiman akan dikirim ke ' + v + '.');
+      input.value = '';
+    });
+    newsletter.querySelector('input[type="email"]').addEventListener('input', function () {
+      this.classList.remove('is-invalid');
+    });
+  }
+
   /* ---------- Filmstrip counter ---------- */
   const fstrip = document.querySelector('.filmstrip-frames');
   const fcount = document.querySelector('.filmstrip-count');

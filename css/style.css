@@ -771,12 +771,12 @@ p { text-wrap: pretty; }
   white-space: nowrap;
 }
 
-.marquee-item::after {
-  content: "/";
+.marquee-item i {
   font-style: normal;
   font-family: var(--font-mono);
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   color: var(--pink-400);
+  margin-inline: 0.55em;
 }
 
 @keyframes marquee {
@@ -1656,19 +1656,20 @@ p { text-wrap: pretty; }
   width: 42px;
   height: 42px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid var(--line-dark);
+  background: transparent;
+  border: 1.5px solid var(--line-dark);
   display: grid;
   place-items: center;
   color: var(--cream-100);
-  transition: all var(--t-fast) var(--ease);
+  transition: background var(--t-med) var(--ease),
+              border-color var(--t-med) var(--ease),
+              color var(--t-med) var(--ease);
 }
 
 .social-btn:hover {
-  background: var(--pink-500);
-  border-color: var(--pink-500);
-  color: #fff;
-  transform: translateY(-3px);
+  background: var(--cream-200);
+  border-color: var(--cream-200);
+  color: var(--ink-900);
 }
 
 .social-btn svg { width: 18px; height: 18px; }
@@ -1698,18 +1699,25 @@ p { text-wrap: pretty; }
 }
 
 .footer-newsletter button {
-  padding: 0.7em 1.25em;
+  padding: 0.7em 1.15em;
   font-size: 0.875rem;
   font-weight: 700;
   border: none;
   border-radius: var(--r-pill);
-  background: var(--pink-500);
-  color: #fff;
+  background: var(--cream-200);
+  color: var(--ink-900);
   cursor: pointer;
-  transition: background var(--t-fast) var(--ease);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--t-med) var(--ease);
 }
 
-.footer-newsletter button:hover { background: var(--pink-600); }
+.footer-newsletter button svg { width: 1.05em; height: 1.05em; }
+
+.footer-newsletter button:hover { background: #fff; }
+
+.footer-newsletter input.is-invalid { border-color: var(--pink-400); }
 
 .footer-bottom {
   display: flex;
