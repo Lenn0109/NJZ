@@ -66,7 +66,47 @@
   }, { rootMargin: '-40% 0px -55% 0px' });
   sections.forEach(function (s) { spy.observe(s); });
 
-  /* ---------- Reveal on scroll ---------- */
+  /* ---------- Lenis smooth scroll (paybox-style luxury) ---------- */
+  if (window.Lenis && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const lenis = new Lenis({
+      duration: 1.15,
+      easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      touchMultiplier: 1.4,
+    });
+    document.documentElement.classList.add('lenis');
+    function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+    requestAnimationFrame(raf);
+    window.__lenis = lenis;
+
+    /* anchor link -> lenis.scrollTo */
+    document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+      a.addEventListener('click', function (e) {
+        const id = a.getAttribute('href');
+        if (id.length <= 1) return;
+        const target = document.querySelector(id);
+        if (!target) return;
+        e.preventDefault();
+        lenis.scrollTo(target, { offset: -72, duration: 1.2 });
+      });
+    });
+
+    /* sync scroll spy + header dengan lenis */
+    let headerTick = false;
+    lenis.on('scroll', function () {
+      if (headerTick) return;
+      headerTick = true;
+      requestAnimationFrame(function () {
+        const y = lenis.scroll || 0;
+        const header = document.querySelector('.site-header');
+        if (header) header.classList.toggle('is-scrolled', y > 60);
+        headerTick = false;
+      });
+    });
+  }
+
+  /* ---------- Reveal on scroll (paybox-style: blur + easeOutExpo) ---------- */
   const revealables = document.querySelectorAll(
     '.section-head, .about-media, .about-content, .feature, .dish-card, .testi-card, .contact-card, .form-card, .video-frame, .reserve-info, .marquee, .filmstrip'
   );
@@ -245,7 +285,8 @@
     backTop.classList.toggle('is-visible', window.scrollY > 480);
   }, { passive: true });
   backTop.addEventListener('click', function () {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (window.__lenis) window.__lenis.scrollTo(0, { duration: 1.2 });
+    else window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
   /* ---------- Footer year ---------- */

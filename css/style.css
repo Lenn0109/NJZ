@@ -1914,18 +1914,33 @@ p { text-wrap: pretty; }
   to { opacity: 0; transform: translateX(30px) scale(0.96); }
 }
 
-/* ================= SCROLL REVEAL ================= */
+/* ================= LENIS SMOOTH SCROLL ================= */
+html.lenis,
+html.lenis body { height: auto; }
+html.lenis { scroll-behavior: auto !important; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+
+/* ================= SCROLL REVEAL (paybox-style: easeOutExpo + blur) ================= */
 .reveal {
   opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 800ms var(--ease-out),
-              transform 800ms var(--ease-out);
+  transform: translateY(26px) scale(0.985);
+  filter: blur(6px);
+  transition: opacity 800ms cubic-bezier(.22,1,.36,1),
+              transform 1000ms cubic-bezier(.22,1,.36,1),
+              filter 700ms cubic-bezier(.22,1,.36,1);
   transition-delay: var(--delay, 0ms);
+  will-change: opacity, transform, filter;
 }
 
 .reveal.is-visible {
   opacity: 1;
   transform: none;
+  filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { transform: none; filter: none; opacity: 1; transition: none; }
+  html.lenis, html.lenis body { height: auto; }
 }
 
 /* ================= BACK TO TOP ================= */
