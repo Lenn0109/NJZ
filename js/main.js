@@ -309,19 +309,27 @@
     if (window.__lenis) window.__lenis.on('scroll', scheduleScrub);
     window.addEventListener('scroll', scheduleScrub, { passive: true });
     window.addEventListener('resize', scheduleScrub);
-    /* interaksi manual (drag/trackpad/wheel di dalam strip) menonaktifkan scrub sejenak */
-    ['wheel', 'touchstart', 'pointerdown'].forEach(function (ev) {
-      fstrip.addEventListener(ev, function () {
-        userInteracting = true;
-        fstrip.classList.add('is-user');
-        clearTimeout(interactTimer);
-        interactTimer = setTimeout(function () {
-          userInteracting = false;
-          fstrip.classList.remove('is-user');
-          scheduleScrub();
-        }, 2600);
-      }, { passive: true });
-    });
+    /* interaksi manual: hanya gesture horizontal (trackpad swipe / drag) yang pause scrub.
+       wheel vertikal tetap jadi scroll halaman biasa, gak di-takeover. */
+    fstrip.addEventListener('wheel', function (e) {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) markUser();
+    }, { passive: true });
+    fstrip.addEventListener('touchstart', markUser, { passive: true });
+    fstrip.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'mouse') return;
+      markUser();
+    }, { passive: true });
+
+    function markUser() {
+      userInteracting = true;
+      fstrip.classList.add('is-user');
+      clearTimeout(interactTimer);
+      interactTimer = setTimeout(function () {
+        userInteracting = false;
+        fstrip.classList.remove('is-user');
+        scheduleScrub();
+      }, 1200);
+    }
     scheduleScrub();
     updateCount();
   }
