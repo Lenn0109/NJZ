@@ -108,7 +108,7 @@
 
   /* ---------- Reveal on scroll (paybox-style: blur + easeOutExpo) ---------- */
   const revealables = document.querySelectorAll(
-    '.section-head, .about-media, .about-content, .feature, .dish-card, .testi-card, .contact-card, .form-card, .video-frame, .reserve-info, .marquee, .filmstrip'
+    '.section-head, .about-media, .about-content, .feature, .menu-tgroup, .testi-card, .contact-card, .form-card, .video-frame, .reserve-info, .marquee, .filmstrip'
   );
   revealables.forEach(function (el, i) {
     el.classList.add('reveal');
@@ -125,16 +125,17 @@
   revealables.forEach(function (el) { revealObs.observe(el); });
 
   /* ---------- Menu filter ---------- */
+  /* [HAPUS] filter lama memilih .dish-card (kartu) — diganti .menu-tgroup (kelompok tabel per kategori). */
   const filterBtns = document.querySelectorAll('.filter-btn');
-  const dishCards = document.querySelectorAll('.dish-card');
+  const menuTgroups = document.querySelectorAll('.menu-tgroup');   /* [TAMBAH] target filter sekarang tabel per kategori */
   filterBtns.forEach(function (btn) {
     btn.addEventListener('click', function () {
       filterBtns.forEach(function (b) { b.classList.remove('is-active'); });
       btn.classList.add('is-active');
       const f = btn.dataset.filter;
-      dishCards.forEach(function (card) {
-        const show = f === 'all' || card.dataset.cat === f;
-        card.classList.toggle('is-hidden', !show);
+      menuTgroups.forEach(function (group) {
+        const show = f === 'all' || group.dataset.cat === f;
+        group.classList.toggle('is-hidden', !show);
       });
     });
   });
@@ -155,10 +156,14 @@
   }
 
   /* ---------- Order buttons ---------- */
+  /* [HAPUS] handler lama membaca nama dari .dish-card (kartu) — di tabel tidak ada .dish-card lagi. */
+  /* [TAMBAH] ambil nama dari baris tabel <tr>: kolom ke-2 (menu) adalah link teks. */
   document.querySelectorAll('.dish-order').forEach(function (btn) {
     btn.addEventListener('click', function () {
-      const name = btn.closest('.dish-card').querySelector('.dish-name').textContent;
-      toast('Ditambahkan ke pesanan', name + ' telah ditambahkan ke pesanan anda.');
+      const row = btn.closest('tr');                                  /* [TAMBAH] naik ke baris tabel */
+      const cell = row ? row.children[1] : null;                      /* [TAMBAH] kolom ke-2 berisi nama menu */
+      const name = cell ? cell.textContent.trim() : 'menu';
+      toast('Ditambahkan ke pesanan', name + ' telah ditambahkan ke pesanan Anda.');
     });
   });
 

@@ -239,9 +239,11 @@ p { text-wrap: pretty; }
 .section--cream .section-lead { color: var(--txt-700); }
 
 /* elemen menu: beralih dari asumsi dark ke cream */
-.section--cream .menu-list { border-top-color: var(--border); }
-.section--cream .dish-card { border-bottom-color: var(--border); }
-.section--cream .dish-card:hover { background: rgba(24, 42, 77, 0.045); }
+/* [HAPUS] .section--cream .menu-list / .dish-card di bawah tidak terpakai lagi — menu sekarang tabel (lihat blok [TAMBAH] MENU TABLES). */
+/* [HAPUS] .section--cream .menu-list { border-top-color: var(--border); } */
+/* [HAPUS] .section--cream .dish-card { border-bottom-color: var(--border); } */
+/* [HAPUS] .section--cream .dish-card:hover { background: rgba(24, 42, 77, 0.045); } */
+.section--cream { /* placeholder penanda: aturan dish-card cream dihapus di atas */ }
 .section--cream .dish-desc { color: var(--txt-700); }
 .section--cream .dish-top::after { border-bottom-color: rgba(24, 42, 77, 0.28); }
 
@@ -1014,7 +1016,11 @@ p { text-wrap: pretty; }
   color: var(--cream-100);
 }
 
-/* ================= MENU (editorial list) ================= */
+/* [HAPUS] ================= MENU (editorial list) ================= */
+/* [HAPUS] blok .menu-list / .dish-card di bawah tidak dipakai lagi — menu sekarang pakai tabel (lihat blok [TAMBAH] MENU TABLES). */
+/* [HAPUS] aturan: .menu-list, .dish-card, .dish-idx, .dish-thumb, .dish-tag, .dish-body, .dish-top, .dish-name, .dish-price, .dish-desc, .dish-meta, .dish-order */
+/* --- awal blok yang dinonaktifkan --- */
+/*
 .menu-list {
   border-top: 1px solid var(--line-dark);
 }
@@ -1042,7 +1048,6 @@ p { text-wrap: pretty; }
 
 .dish-card.is-hidden { display: none; }
 
-/* angka mono di kiri — ritme daftar restoran sungguhan */
 .dish-idx {
   font-family: var(--font-mono);
   font-size: 0.8125rem;
@@ -1103,7 +1108,6 @@ p { text-wrap: pretty; }
   gap: 0.75rem;
 }
 
-/* leader dots antara nama dan harga */
 .dish-name {
   font-size: 1.125rem;
   white-space: nowrap;
@@ -1167,6 +1171,196 @@ p { text-wrap: pretty; }
   border-color: var(--pink-500);
   background: rgba(236, 106, 165, 0.16);
 }
+*/
+/* --- akhir blok yang dinonaktifkan --- */
+
+/* [TAMBAH] ================= MENU TABLES ================= */
+/* [TAMBAH] menu dalam bentuk tabel: satu <table> per kategori, dibungkus agar bisa scroll horizontal di layar kecil. */
+/* [TAMBAH] FIX mobile: grid item punya min-width:auto sehingga melebar mengikuti isi tabel (640px) dan merusak layout.
+            track minmax(0,1fr) + min-width:0 memaksa .menu-twrap kembali mengecil, lalu scroll horizontal bekerja. */
+.menu-tables {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.75rem, 3.5vw, 2.75rem);
+}
+
+/* [TAMBAH] satu kelompok tabel per kategori (main / salad / appetizer / soup) */
+.menu-tgroup { position: relative; min-width: 0; }
+
+.menu-tgroup.is-hidden { display: none; }
+
+/* [TAMBAH] judul kategori tabel — ritme nomor mono seperti daftar menu restoran sungguhan */
+.menu-tgroup-title {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 600;
+  font-style: italic;
+  color: var(--cream-100);
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--line-dark);
+}
+
+.menu-tgroup-title::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px dotted rgba(255, 255, 255, 0.22);
+  margin-bottom: 0.15em;
+  min-width: 1.5rem;
+}
+
+/* [TAMBAH] pembungkus scroll horizontal supaya tabel tidak pecah di layar sempit */
+.menu-twrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--pink-500) transparent;
+}
+
+/* [TAMBAH] tabel menu inti: border-collapse supaya garis sel rapi tidak berpapasan */
+.menu-table {
+  width: 100%;
+  min-width: 720px;
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: 0.9375rem;
+  text-align: left;
+}
+
+/* [TAMBAH] header tabel: kapital kecil, mono, terang di permukaan gelap */
+.menu-table thead th {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--txt-300);
+  padding: 0.7rem 0.85rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+  text-align: left;
+  white-space: nowrap;
+}
+
+/* [TAMBAH] baris isi: padding lega, garis bawah tipis */
+.menu-table tbody td {
+  padding: 0.85rem 0.85rem;
+  border-bottom: 1px solid var(--line-dark);
+  vertical-align: top;
+  color: var(--cream-100);
+}
+
+/* [TAMBAH] zebra striping halus untuk keterbacaan baris selang-seling */
+.menu-table tbody tr:nth-child(even) td {
+  background: rgba(255, 255, 255, 0.035);
+}
+
+/* [TAMBAH] efek hover baris — balik latar tipis untuk feedback scannable */
+.menu-table tbody tr:hover td {
+  background: rgba(236, 106, 165, 0.1);
+}
+
+/* [TAMBAH] kolom "no": nomor mono rapi tegak */
+.menu-table td:nth-child(1) {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--pink-400);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+/* [TAMBAH] kolom nama menu: nama hidangan sebagai link ke foto */
+.menu-table td:nth-child(2) a {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--cream-100);
+  white-space: nowrap;
+  border-bottom: 1px solid transparent;
+  transition: color var(--t-fast) var(--ease),
+              border-color var(--t-fast) var(--ease);
+}
+
+.menu-table td:nth-child(2) a:hover {
+  color: var(--pink-400);
+  border-bottom-color: var(--pink-400);
+}
+
+/* [TAMBAH] kolom deskripsi: teks netral lebih kecil */
+.menu-table td:nth-child(3) {
+  font-size: var(--fs-sm);
+  color: var(--txt-300);
+  max-width: 46ch;
+}
+
+/* [TAMBAH] kolom harga: mono tegas dan selalu kanan-rata */
+.menu-table td:nth-child(4) {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.9375rem;
+  color: var(--amber-400);
+  white-space: nowrap;
+  text-align: right;
+}
+
+/* [TAMBAH] kolom ulasan: bintang emas + jumlah, nowrap biar tidak terpotong */
+.menu-table td:nth-child(5) {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--txt-500);
+  white-space: nowrap;
+}
+
+.menu-table td:nth-child(5) .rating {
+  color: var(--amber-400);
+  letter-spacing: 1px;
+}
+
+/* [TAMBAH] tombol pesan di dalam tabel: pill kecil, kontras terang */
+.menu-table td:nth-child(6) .dish-order {
+  padding: 0.5em 1.05em;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--cream-100);
+  background: transparent;
+  border: 1px solid var(--line-dark);
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--t-fast) var(--ease);
+}
+
+.menu-table td:nth-child(6) .dish-order:hover {
+  color: #fff;
+  border-color: var(--pink-500);
+  background: rgba(236, 106, 165, 0.16);
+}
+
+/* [TAMBAH] responsive: layar kecil — tabel tetap utuh, pengguna scroll horizontal (menu-twrap sudah menangani). */
+@media (max-width: 640px) {
+  .menu-table { min-width: 560px; }
+  .menu-tgroup-title { font-size: 1.1875rem; }
+
+  /* [TAMBAH] deskripsi dibatasi 2 baris (clamp) supaya baris tidak setinggi layar di mobile; sisanya pakai ellipsis. */
+  .menu-table td:nth-child(3) {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 34ch;
+  }
+
+  /* [TAMBAH] sel lebih rapat di mobile supaya kolom harga & ulasan lebih cepat terlihat saat di-scroll horizontal. */
+  .menu-table thead th,
+  .menu-table tbody td { padding-inline: 0.6rem; }
+}
+/* [TAMBAH] akhir blok menu tables */
 
 /* ================= FILMSTRIP GALLERY ================= */
 .section--tight { padding-block: clamp(2.5rem, 5vw, 4.5rem); }
@@ -2229,3 +2423,39 @@ html.lenis { scroll-behavior: auto !important; }
 }
 
 .mt-4 { margin-top: var(--sp-4); }
+
+/* [TAMBAH] ================= MENU TABLES — mode cream ================= */
+/* [TAMBAH] section menu pakai .section--cream (terang), jadi tabel perlu warna teks & garis yang cocok di latar krim. */
+.section--cream .menu-tgroup-title { color: var(--ink-800); border-bottom-color: var(--border); }
+.section--cream .menu-tgroup-title::after { border-bottom-color: rgba(24, 42, 77, 0.28); }
+
+.section--cream .menu-table thead th { color: var(--txt-500); border-bottom-color: rgba(24, 42, 77, 0.35); }
+
+.section--cream .menu-table tbody td { color: var(--txt-900); border-bottom-color: var(--border); }
+
+/* [TAMBAH] zebra striping & hover lebih gelap sedikit di latar krim */
+.section--cream .menu-table tbody tr:nth-child(even) td { background: rgba(24, 42, 77, 0.045); }
+.section--cream .menu-table tbody tr:hover td { background: rgba(236, 106, 165, 0.12); }
+
+.section--cream .menu-table td:nth-child(1) { color: var(--warm-clay); }
+
+.section--cream .menu-table td:nth-child(2) a { color: var(--ink-800); }
+.section--cream .menu-table td:nth-child(2) a:hover { color: var(--pink-600); border-bottom-color: var(--pink-600); }
+
+.section--cream .menu-table td:nth-child(3) { color: var(--txt-700); }
+
+.section--cream .menu-table td:nth-child(4) { color: var(--warm-clay); }
+
+.section--cream .menu-table td:nth-child(5) { color: var(--txt-500); }
+.section--cream .menu-table td:nth-child(5) .rating { color: var(--amber-500); }
+
+.section--cream .menu-table td:nth-child(6) .dish-order {
+  color: var(--ink-800);
+  border-color: var(--border);
+}
+.section--cream .menu-table td:nth-child(6) .dish-order:hover {
+  color: #fff;
+  background: var(--pink-500);
+  border-color: var(--pink-500);
+}
+/* [TAMBAH] akhir mode cream tabel menu */

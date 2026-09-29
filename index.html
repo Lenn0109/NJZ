@@ -60,7 +60,7 @@
       <div class="hero-media">
         <img class="hero-fallback" src="assets/images/hero-restaurant.jpg" alt="Suasana meja makan NewJeans" fetchpriority="high" decoding="async">
         <video autoplay muted loop playsinline poster="assets/images/hero-restaurant.jpg" aria-hidden="true">
-          <source src="assets/videos/coverr-preparing-a-turkey-8554.mp4" type="video/mp4">
+          <source src="assets/videos/kitchen.mp4" type="video/mp4">
         </video>
       </div>
       <div class="container hero-inner">
@@ -186,186 +186,169 @@
           <a href="#menu" class="btn btn--ghost">menu lengkap<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
         </div>
 
-        <div class="menu-list">
-          <article class="dish-card" data-cat="main">
-            <span class="dish-idx">01</span>
-            <a href="assets/images/menu-pizza.jpg" class="dish-thumb" target="_blank">
-              <img src="assets/images/menu-pizza.jpg" alt="Pizza artisan" loading="lazy">
-            </a>
-            <div class="dish-body">
-              <div class="dish-top">
-                <h3 class="dish-name">pizza artisan</h3>
-                <span class="dish-price">Rp 296.000</span>
-              </div>
-              <p class="dish-desc">Adonan tipis dipanggang di oven kayu, mozzarella buatan sendiri, tomat San Marzano, basil segar, dan parmesan matang.</p>
-              <div class="dish-meta">
-                <span class="rating">★★★★★</span>
-                <span>128 ulasan</span>
-                <span class="dish-tag">pilihan koki</span>
-              </div>
-              <button class="dish-order">tambah ke pesanan</button>
-            </div>
-          </article>
+                <!-- [HAPUS] blok menu-list berbasis kartu (dish-card) — diganti struktur tabel per kategori di bawah -->
+        <!-- [TAMBAH] menu dalam bentuk tabel-tabel, satu tabel per kategori (main / salad / appetizer / soup) -->
 
-          <article class="dish-card" data-cat="main">
-            <span class="dish-idx">02</span>
-            <a href="assets/images/menu-steak.jpg" class="dish-thumb" target="_blank">
-              <img src="assets/images/menu-steak.jpg" alt="Steak ribeye" loading="lazy">
-            </a>
-            <div class="dish-body">
-              <div class="dish-top">
-                <h3 class="dish-name">steak ribeye</h3>
-                <span class="dish-price">Rp 544.000</span>
-              </div>
-              <p class="dish-desc">Ribeye sapi rumputan, mentega herbal, kentang tumbuk bawang putih, dan sayuran musiman.</p>
-              <div class="dish-meta">
-                <span class="rating">★★★★★</span>
-                <span>84 ulasan</span>
-                <span class="dish-tag dish-tag--hot">populer</span>
-              </div>
-              <button class="dish-order">tambah ke pesanan</button>
-            </div>
-          </article>
+        <div class="menu-tables" id="menuTables">
 
-          <article class="dish-card" data-cat="salad">
-            <span class="dish-idx">03</span>
-            <a href="assets/images/menu-salad.jpg" class="dish-thumb" target="_blank">
-              <img src="assets/images/menu-salad.jpg" alt="Salad cobb" loading="lazy">
-            </a>
-            <div class="dish-body">
-              <div class="dish-top">
-                <h3 class="dish-name">salad cobb</h3>
-                <span class="dish-price">Rp 256.000</span>
-              </div>
-              <p class="dish-desc">Sayuran hijau campuran, ayam panggang, alpukat, telur rebus, bacon, tomat, dan blue cheese dengan vinaigrette racikan kami.</p>
-              <div class="dish-meta">
-                <span class="rating">★★★★☆</span>
-                <span>96 ulasan</span>
-              </div>
-              <button class="dish-order">tambah ke pesanan</button>
+          <!-- [TAMBAH] tabel kategori: hidangan utama -->
+          <div class="menu-tgroup" data-cat="main">
+            <h3 class="menu-tgroup-title">hidangan utama</h3>
+            <div class="menu-twrap">
+              <table class="menu-table">
+                <thead>
+                  <tr>
+                    <th>no</th>
+                    <th>menu</th>
+                    <th>deskripsi</th>
+                    <th>harga</th>
+                    <th>ulasan</th>
+                    <th>pesan</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>01</td>
+                    <td><a href="assets/images/menu-pizza.jpg" target="_blank">pizza artisan</a></td>
+                    <td>Adonan tipis dipanggang di oven kayu, mozzarella buatan sendiri, tomat San Marzano, basil segar, dan parmesan matang.</td>
+                    <td>Rp 296.000</td>
+                    <td><span class="rating">★★★★★</span> 128</td>
+                    <td><button class="dish-order">tambah</button></td>
+                  </tr>
+                  <tr>
+                    <td>02</td>
+                    <td><a href="assets/images/menu-steak.jpg" target="_blank">steak ribeye</a></td>
+                    <td>Ribeye sapi rumputan, mentega herbal, kentang tumbuk bawang putih, dan sayuran musiman.</td>
+                    <td>Rp 544.000</td>
+                    <td><span class="rating">★★★★★</span> 84</td>
+                    <td><button class="dish-order">tambah</button></td>
+                  </tr>
+                  <tr>
+                    <td>03</td>
+                    <td><a href="assets/images/menu-bbq.jpg" target="_blank">iga babi bbq</a></td>
+                    <td>Iga babi dimasak lambat dengan glaze saus BBQ racikan kami, disajikan dengan coleslaw dan cornbread.</td>
+                    <td>Rp 424.000</td>
+                    <td><span class="rating">★★★★★</span> 112</td>
+                    <td><button class="dish-order">tambah</button></td>
+                  </tr>
+                  <tr>
+                    <td>04</td>
+                    <td><a href="assets/images/menu-meat.jpg" target="_blank">brisket asap</a></td>
+                    <td>Brisket diasap kayu ek 14 jam, cornbread jalapeño, sayuran bakar, dan glaze bourbon.</td>
+                    <td>Rp 464.000</td>
+                    <td><span class="rating">★★★★★</span> 103</td>
+                    <td><button class="dish-order">tambah</button></td>
+                  </tr>
+                  <tr>
+                    <td>05</td>
+                    <td><a href="assets/images/menu-noodle.jpg" target="_blank">mie gosong</a></td>
+                    <td>Mie beras gosong wok, udang, kacang panjang, jeruk purut, dan bawang goreng.</td>
+                    <td>Rp 280.000</td>
+                    <td><span class="rating">★★★★☆</span> 91</td>
+                    <td><button class="dish-order">tambah</button></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-          </article>
+          </div>
 
-          <article class="dish-card" data-cat="main">
-            <span class="dish-idx">04</span>
-            <a href="assets/images/menu-bbq.jpg" class="dish-thumb" target="_blank">
-              <img src="assets/images/menu-bbq.jpg" alt="Iga babi BBQ" loading="lazy">
-            </a>
-            <div class="dish-body">
-              <div class="dish-top">
-                <h3 class="dish-name">iga babi bbq</h3>
-                <span class="dish-price">Rp 424.000</span>
-              </div>
-              <p class="dish-desc">Iga babi dimasak lambat dengan glaze saus BBQ racikan kami, disajikan dengan coleslaw dan cornbread.</p>
-              <div class="dish-meta">
-                <span class="rating">★★★★★</span>
-                <span>112 ulasan</span>
-                <span class="dish-tag">favorit</span>
-              </div>
-              <button class="dish-order">tambah ke pesanan</button>
+          <!-- [TAMBAH] tabel kategori: salad -->
+          <div class="menu-tgroup" data-cat="salad">
+            <h3 class="menu-tgroup-title">salad</h3>
+            <div class="menu-twrap">
+              <table class="menu-table">
+                <thead>
+                  <tr>
+                    <th>no</th>
+                    <th>menu</th>
+                    <th>deskripsi</th>
+                    <th>harga</th>
+                    <th>ulasan</th>
+                    <th>pesan</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>06</td>
+                    <td><a href="assets/images/menu-salad.jpg" target="_blank">salad cobb</a></td>
+                    <td>Sayuran hijau campuran, ayam panggang, alpukat, telur rebus, bacon, tomat, dan blue cheese dengan vinaigrette racikan kami.</td>
+                    <td>Rp 256.000</td>
+                    <td><span class="rating">★★★★☆</span> 96</td>
+                    <td><button class="dish-order">tambah</button></td>
+                  </tr>
+                  <tr>
+                    <td>07</td>
+                    <td><a href="assets/images/menu-bowl.jpg" target="_blank">buddha bowl</a></td>
+                    <td>Quinoa, buncis panggang, ubi jalar, kale, alpukat, dan dressing tahini.</td>
+                    <td>Rp 240.000</td>
+                    <td><span class="rating">★★★★★</span> 64</td>
+                    <td><button class="dish-order">tambah</button></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-          </article>
+          </div>
 
-          <article class="dish-card" data-cat="appetizer">
-            <span class="dish-idx">05</span>
-            <a href="assets/images/menu-egg.jpg" class="dish-thumb" target="_blank">
-              <img src="assets/images/menu-egg.jpg" alt="Roti alpukat" loading="lazy">
-            </a>
-            <div class="dish-body">
-              <div class="dish-top">
-                <h3 class="dish-name">roti alpukat</h3>
-                <span class="dish-price">Rp 192.000</span>
-              </div>
-              <p class="dish-desc">Roti sourdough, alpukat halus, telur poach, bubuk cabai, microgreens, dan dressing lemon.</p>
-              <div class="dish-meta">
-                <span class="rating">★★★★★</span>
-                <span>78 ulasan</span>
-              </div>
-              <button class="dish-order">tambah ke pesanan</button>
+          <!-- [TAMBAH] tabel kategori: pembuka -->
+          <div class="menu-tgroup" data-cat="appetizer">
+            <h3 class="menu-tgroup-title">pembuka</h3>
+            <div class="menu-twrap">
+              <table class="menu-table">
+                <thead>
+                  <tr>
+                    <th>no</th>
+                    <th>menu</th>
+                    <th>deskripsi</th>
+                    <th>harga</th>
+                    <th>ulasan</th>
+                    <th>pesan</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>08</td>
+                    <td><a href="assets/images/menu-egg.jpg" target="_blank">roti alpukat</a></td>
+                    <td>Roti sourdough, alpukat halus, telur poach, bubuk cabai, microgreens, dan dressing lemon.</td>
+                    <td>Rp 192.000</td>
+                    <td><span class="rating">★★★★★</span> 78</td>
+                    <td><button class="dish-order">tambah</button></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-          </article>
+          </div>
 
-          <article class="dish-card" data-cat="salad">
-            <span class="dish-idx">06</span>
-            <a href="assets/images/menu-bowl.jpg" class="dish-thumb" target="_blank">
-              <img src="assets/images/menu-bowl.jpg" alt="Buddha bowl" loading="lazy">
-            </a>
-            <div class="dish-body">
-              <div class="dish-top">
-                <h3 class="dish-name">buddha bowl</h3>
-                <span class="dish-price">Rp 240.000</span>
-              </div>
-              <p class="dish-desc">Quinoa, buncis panggang, ubi jalar, kale, alpukat, dan dressing tahini.</p>
-              <div class="dish-meta">
-                <span class="rating">★★★★★</span>
-                <span>64 ulasan</span>
-                <span class="dish-tag">vegetarian</span>
-              </div>
-              <button class="dish-order">tambah ke pesanan</button>
+          <!-- [TAMBAH] tabel kategori: sup -->
+          <div class="menu-tgroup" data-cat="soup">
+            <h3 class="menu-tgroup-title">sup</h3>
+            <div class="menu-twrap">
+              <table class="menu-table">
+                <thead>
+                  <tr>
+                    <th>no</th>
+                    <th>menu</th>
+                    <th>deskripsi</th>
+                    <th>harga</th>
+                    <th>ulasan</th>
+                    <th>pesan</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>09</td>
+                    <td><a href="assets/images/menu-soup.jpg" target="_blank">kaldu tulang</a></td>
+                    <td>Kaldu tulang sapi 24 jam, sumur panggang, jamur shimeji, dan herbal dari kebun kami.</td>
+                    <td>Rp 176.000</td>
+                    <td><span class="rating">★★★★★</span> 57</td>
+                    <td><button class="dish-order">tambah</button></td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-          </article>
+          </div>
 
-          <article class="dish-card" data-cat="main">
-            <span class="dish-idx">07</span>
-            <a href="assets/images/menu-meat.jpg" class="dish-thumb" target="_blank">
-              <img src="assets/images/menu-meat.jpg" alt="Brisket asap" loading="lazy">
-            </a>
-            <div class="dish-body">
-              <div class="dish-top">
-                <h3 class="dish-name">brisket asap</h3>
-                <span class="dish-price">Rp 464.000</span>
-              </div>
-              <p class="dish-desc">Brisket diasap kayu ek 14 jam, cornbread jalapeño, sayuran bakar, dan glaze bourbon.</p>
-              <div class="dish-meta">
-                <span class="rating">★★★★★</span>
-                <span>103 ulasan</span>
-                <span class="dish-tag">pilihan koki</span>
-              </div>
-              <button class="dish-order">tambah ke pesanan</button>
-            </div>
-          </article>
-
-          <article class="dish-card" data-cat="main">
-            <span class="dish-idx">08</span>
-            <a href="assets/images/menu-noodle.jpg" class="dish-thumb" target="_blank">
-              <img src="assets/images/menu-noodle.jpg" alt="Mie gosong" loading="lazy">
-            </a>
-            <div class="dish-body">
-              <div class="dish-top">
-                <h3 class="dish-name">mie gosong</h3>
-                <span class="dish-price">Rp 280.000</span>
-              </div>
-              <p class="dish-desc">Mie beras gosong wok, udang, kacang panjang, jeruk purut, dan bawang goreng.</p>
-              <div class="dish-meta">
-                <span class="rating">★★★★☆</span>
-                <span>91 ulasan</span>
-                <span class="dish-tag">favorit</span>
-              </div>
-              <button class="dish-order">tambah ke pesanan</button>
-            </div>
-          </article>
-
-          <article class="dish-card" data-cat="soup">
-            <span class="dish-idx">09</span>
-            <a href="assets/images/menu-soup.jpg" class="dish-thumb" target="_blank">
-              <img src="assets/images/menu-soup.jpg" alt="Kaldu tulang" loading="lazy">
-            </a>
-            <div class="dish-body">
-              <div class="dish-top">
-                <h3 class="dish-name">kaldu tulang</h3>
-                <span class="dish-price">Rp 176.000</span>
-              </div>
-              <p class="dish-desc">Kaldu tulang sapi 24 jam, sumur panggang, jamur shimeji, dan herbal dari kebun kami.</p>
-              <div class="dish-meta">
-                <span class="rating">★★★★★</span>
-                <span>57 ulasan</span>
-                <span class="dish-tag dish-tag--hot">populer</span>
-              </div>
-              <button class="dish-order">tambah ke pesanan</button>
-            </div>
-          </article>
         </div>
-      </div>
+        <!-- [TAMBAH] akhir blok tabel menu -->
     </section>
 
     <section id="gallery" class="section section--tight">
@@ -480,8 +463,8 @@
         </div>
 
         <div class="video-frame">
-          <video id="promoVideo" poster="assets/images/kitchen-poster.jpg" preload="metadata" muted>
-            <source src="assets/videos/coverr-premium-cutting-up-chicken-3978.mp4" type="video/mp4">
+          <video id="promoVideo" poster="assets/images/promo-poster.jpg" preload="metadata" muted>
+            <source src="assets/videos/promo.mp4" type="video/mp4">
           </video>
           <div class="play-btn" id="promoPlayBtn" aria-label="Putar video">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
