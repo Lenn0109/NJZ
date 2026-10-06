@@ -619,134 +619,248 @@
       <div class="container">
         <div class="section-head">
           <span class="chapter">no. 07</span>
-          <span class="eyebrow">pesan &amp; bawa pulang</span>
+          <span class="eyebrow">form pemesanan</span>
           <h2 class="section-title">pesan makanan anda</h2>
           <p class="section-lead">
-            Pilih hidangan yang Anda suka, atur jumlahnya, lalu kirim pesanan. Kitchen kami mulai prepping begitu pesanan masuk.
+            Lengkapi data pemesan, pilih paket menu, tentukan cara pembayaran, lalu kirim pesanan Anda.
           </p>
         </div>
 
-        <div class="order-grid">
-          <!-- ============ KERANJANG ============ -->
-          <div class="cart-panel">
-            <div class="cart-head">
-              <div>
-                <span class="cart-kicker">pesanan anda</span>
-                <h3 class="cart-title">keranjang</h3>
+        <form class="order-form-card" id="orderForm" novalidate>
+
+          <fieldset class="of-group">
+            <legend class="of-legend"><span class="of-step">01</span> data pemesan</legend>
+            <p class="of-desc">Isi nama lengkap dan nomor telepon yang bisa kami hubungi.</p>
+
+            <div class="of-grid of-grid--2">
+              <div class="field">
+                <label for="fName">nama lengkap</label>
+                <input type="text" id="fName" name="nama" required placeholder="Contoh: Rangga Saputra" autocomplete="name">
+                <div class="err"></div>
               </div>
-              <span class="cart-badge" id="cartBadge">0 item</span>
+              <div class="field">
+                <label for="fPhone">nomor hp</label>
+                <input type="text" id="fPhone" name="no_hp" required placeholder="Contoh: 081234567890" inputmode="numeric" autocomplete="tel">
+                <div class="err"></div>
+              </div>
             </div>
 
-            <div class="cart-body" id="cartBody">
-              <div class="cart-empty" id="cartEmpty">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/>
-                </svg>
-                <p>Keranjang masih kosong.</p>
-                <a href="#menu" class="cart-jump">Lihat menu dulu<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+            <div class="of-grid of-grid--2 of-grid--mt">
+              <div class="field">
+                <label for="fDate">tanggal booking</label>
+                <input type="date" id="fDate" name="tanggal" required>
+                <div class="err"></div>
               </div>
-              <ul class="cart-list" id="cartList" hidden></ul>
+              <div class="field">
+                <label for="fTime">waktu booking <span class="opt">— opsional</span></label>
+                <input type="text" id="fTime" name="waktu" placeholder="Contoh: 19:00">
+                <div class="err"></div>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="of-group">
+            <legend class="of-legend"><span class="of-step">02</span> pilihan paket</legend>
+            <p class="of-desc">Centang paket yang Anda pesan, lalu isi jumlah item pada kolom jumlah.</p>
+
+            <div class="of-cat" data-cat="makanan">
+              <div class="of-cat-head">
+                <span class="of-cat-title">makanan</span>
+                <span class="of-cat-note">hidangan utama &amp; sup</span>
+              </div>
+              <div class="of-cat-list">
+                <label class="of-item">
+                  <input type="checkbox" id="pkM1" name="paket[]" value="makanan:pizza artisan:296000" data-name="pizza artisan" data-price="296000">
+                  <span class="of-item-body">
+                    <span class="of-item-name">pizza artisan</span>
+                    <span class="of-item-desc">Oven kayu, mozzarella homemade, San Marzano.</span>
+                  </span>
+                  <span class="of-item-price">Rp 296.000</span>
+                  <input type="text" class="of-qty" name="jumlah[]" value="1" inputmode="numeric" data-for="pkM1" aria-label="jumlah pizza artisan">
+                </label>
+                <label class="of-item">
+                  <input type="checkbox" id="pkM2" name="paket[]" value="makanan:steak ribeye:544000" data-name="steak ribeye" data-price="544000">
+                  <span class="of-item-body">
+                    <span class="of-item-name">steak ribeye</span>
+                    <span class="of-item-desc">Ribeye sapi grassland, mentega herbal, kentang tumbuk.</span>
+                  </span>
+                  <span class="of-item-price">Rp 544.000</span>
+                  <input type="text" class="of-qty" name="jumlah[]" value="1" inputmode="numeric" data-for="pkM2" aria-label="jumlah steak ribeye">
+                </label>
+                <label class="of-item">
+                  <input type="checkbox" id="pkM3" name="paket[]" value="makanan:iga babi bbq:424000" data-name="iga babi bbq" data-price="424000">
+                  <span class="of-item-body">
+                    <span class="of-item-name">iga babi bbq</span>
+                    <span class="of-item-desc">Memasak lambat, glaze BBQ racikan, cornbread.</span>
+                  </span>
+                  <span class="of-item-price">Rp 424.000</span>
+                  <input type="text" class="of-qty" name="jumlah[]" value="1" inputmode="numeric" data-for="pkM3" aria-label="jumlah iga babi bbq">
+                </label>
+                <label class="of-item">
+                  <input type="checkbox" id="pkM4" name="paket[]" value="makanan:kaldu tulang:176000" data-name="kaldu tulang" data-price="176000">
+                  <span class="of-item-body">
+                    <span class="of-item-name">kaldu tulang</span>
+                    <span class="of-item-desc">Kaldu sapi 24 jam, jamur shimeji, herbal kebun.</span>
+                  </span>
+                  <span class="of-item-price">Rp 176.000</span>
+                  <input type="text" class="of-qty" name="jumlah[]" value="1" inputmode="numeric" data-for="pkM4" aria-label="jumlah kaldu tulang">
+                </label>
+              </div>
             </div>
 
-            <div class="cart-foot" id="cartFoot" hidden>
-              <div class="cart-line">
-                <span>Subtotal</span><b id="cartSubtotal">Rp 0</b>
+            <div class="of-cat" data-cat="kinuman">
+              <div class="of-cat-head">
+                <span class="of-cat-title">kinuman</span>
+                <span class="of-cat-note">panas &amp; dingin</span>
               </div>
-              <div class="cart-line cart-line--svc">
-                <span>Biaya layanan (10%)</span><b id="cartService">Rp 0</b>
+              <div class="of-cat-list">
+                <label class="of-item">
+                  <input type="checkbox" id="pkK1" name="paket[]" value="kinuman:espresso tunggal:38000" data-name="espresso tunggal" data-price="38000">
+                  <span class="of-item-body">
+                    <span class="of-item-name">espresso tunggal</span>
+                    <span class="of-item-desc">Single origin Papua, catatan cokelat &amp; bunglon.</span>
+                  </span>
+                  <span class="of-item-price">Rp 38.000</span>
+                  <input type="text" class="of-qty" name="jumlah[]" value="1" inputmode="numeric" data-for="pkK1" aria-label="jumlah espresso tunggal">
+                </label>
+                <label class="of-item">
+                  <input type="checkbox" id="pkK2" name="paket[]" value="kinuman:manual brew v60:52000" data-name="manual brew v60" data-price="52000">
+                  <span class="of-item-body">
+                    <span class="of-item-name">manual brew v60</span>
+                    <span class="of-item-desc">Pour over bersih, floral, akhir manis alami.</span>
+                  </span>
+                  <span class="of-item-price">Rp 52.000</span>
+                  <input type="text" class="of-qty" name="jumlah[]" value="1" inputmode="numeric" data-for="pkK2" aria-label="jumlah manual brew v60">
+                </label>
+                <label class="of-item">
+                  <input type="checkbox" id="pkK3" name="paket[]" value="kinuman:matcha latte aren:68000" data-name="matcha latte aren" data-price="68000">
+                  <span class="of-item-body">
+                    <span class="of-item-name">matcha latte aren</span>
+                    <span class="of-item-desc">Matcha Uji dari Kyoto, gula aren, susu oat.</span>
+                  </span>
+                  <span class="of-item-price">Rp 68.000</span>
+                  <input type="text" class="of-qty" name="jumlah[]" value="1" inputmode="numeric" data-for="pkK3" aria-label="jumlah matcha latte aren">
+                </label>
+                <label class="of-item">
+                  <input type="checkbox" id="pkK4" name="paket[]" value="kinuman:lemongrass cooler:44000" data-name="lemongrass cooler" data-price="44000">
+                  <span class="of-item-body">
+                    <span class="of-item-name">lemongrass cooler</span>
+                    <span class="of-item-desc">Serai, fla sitrus, soda, daun mint segar.</span>
+                  </span>
+                  <span class="of-item-price">Rp 44.000</span>
+                  <input type="text" class="of-qty" name="jumlah[]" value="1" inputmode="numeric" data-for="pkK4" aria-label="jumlah lemongrass cooler">
+                </label>
               </div>
-              <div class="cart-line cart-line--total">
-                <span>Total</span><b id="cartTotal">Rp 0</b>
-              </div>
-              <button type="button" class="btn btn--ghost cart-clear" id="cartClear">kosongkan</button>
             </div>
+
+            <div class="of-cat" data-cat="dessert">
+              <div class="of-cat-head">
+                <span class="of-cat-title">dessert</span>
+                <span class="of-cat-note">penutup manis</span>
+              </div>
+              <div class="of-cat-list">
+                <label class="of-item">
+                  <input type="checkbox" id="pkD1" name="paket[]" value="dessert:pistachio tiramisu:88000" data-name="pistachio tiramisu" data-price="88000">
+                  <span class="of-item-body">
+                    <span class="of-item-name">pistachio tiramisu</span>
+                    <span class="of-item-desc">Mascarpone, kahawa espresso, kacang pistasi.</span>
+                  </span>
+                  <span class="of-item-price">Rp 88.000</span>
+                  <input type="text" class="of-qty" name="jumlah[]" value="1" inputmode="numeric" data-for="pkD1" aria-label="jumlah pistachio tiramisu">
+                </label>
+                <label class="of-item">
+                  <input type="checkbox" id="pkD2" name="paket[]" value="dessert:dark chocolate lava:96000" data-name="dark chocolate lava" data-price="96000">
+                  <span class="of-item-body">
+                    <span class="of-item-name">dark chocolate lava</span>
+                    <span class="of-item-desc">Cokelat 70%, molten di tengah.</span>
+                  </span>
+                  <span class="of-item-price">Rp 96.000</span>
+                  <input type="text" class="of-qty" name="jumlah[]" value="1" inputmode="numeric" data-for="pkD2" aria-label="jumlah dark chocolate lava">
+                </label>
+                <label class="of-item">
+                  <input type="checkbox" id="pkD3" name="paket[]" value="dessert:basque burnt cheesecake:82000" data-name="basque burnt cheesecake" data-price="82000">
+                  <span class="of-item-body">
+                    <span class="of-item-name">basque burnt cheesecake</span>
+                    <span class="of-item-desc">Bakar gosong di atas, lembut di dalam.</span>
+                  </span>
+                  <span class="of-item-price">Rp 82.000</span>
+                  <input type="text" class="of-qty" name="jumlah[]" value="1" inputmode="numeric" data-for="pkD3" aria-label="jumlah basque burnt cheesecake">
+                </label>
+                <label class="of-item">
+                  <input type="checkbox" id="pkD4" name="paket[]" value="dessert:pandan waffle:56000" data-name="pandan waffle" data-price="56000">
+                  <span class="of-item-body">
+                    <span class="of-item-name">pandan waffle</span>
+                    <span class="of-item-desc">Adonan pandan, cokelat lele, huntes ghee.</span>
+                  </span>
+                  <span class="of-item-price">Rp 56.000</span>
+                  <input type="text" class="of-qty" name="jumlah[]" value="1" inputmode="numeric" data-for="pkD4" aria-label="jumlah pandan waffle">
+                </label>
+              </div>
+            </div>
+            <div class="field-hint of-hint">Centang minimal satu paket dan isi jumlah minimal 1.</div>
+            <div class="err of-err"></div>
+          </fieldset>
+
+          <fieldset class="of-group">
+            <legend class="of-legend"><span class="of-step">03</span> metode pembayaran</legend>
+            <p class="of-desc">Pilih kartu atau dompet digital yang Anda gunakan.</p>
+
+            <div class="of-pay">
+              <label class="of-pay-card">
+                <input type="radio" name="pembayaran" value="visa" id="payVisa">
+                <span class="of-pay-body">
+                  <span class="of-pay-row">
+                    <span class="of-pay-title">kartu debit / kredit</span>
+                    <span class="of-logos">
+                      <span class="of-logo of-logo--visa">VISA</span>
+                      <span class="of-logo of-logo--mc">
+                        <svg viewBox="0 0 40 24" aria-hidden="true">
+                          <circle cx="15" cy="12" r="8.5" fill="#eb001b"/>
+                          <circle cx="25" cy="12" r="8.5" fill="#f79e1b" fill-opacity="0.92"/>
+                          <path d="M20 5.2a8.5 8.5 0 000 13.6 8.5 8.5 0 000-13.6z" fill="#ff5f00"/>
+                        </svg>
+                      </span>
+                    </span>
+                  </span>
+                  <input type="text" class="of-cardno" name="nomor_kartu" placeholder="nomor kartu (16 digit)" inputmode="numeric" maxlength="19" autocomplete="cc-number" aria-label="nomor kartu">
+                  <div class="of-cardmeta">
+                    <input type="text" name="kadaluarsa" placeholder="MM/YY" maxlength="5" inputmode="numeric" autocomplete="cc-exp" aria-label="kadaluarsa kartu">
+                    <input type="text" name="cvv" placeholder="CVV" maxlength="4" inputmode="numeric" autocomplete="cc-csc" aria-label="kode keamanan kartu">
+                  </div>
+                </span>
+              </label>
+
+              <label class="of-pay-card">
+                <input type="radio" name="pembayaran" value="ewallet" id="payEwallet">
+                <span class="of-pay-body">
+                  <span class="of-pay-row">
+                    <span class="of-pay-title">dompet digital</span>
+                    <span class="of-logos">
+                      <span class="of-logo of-logo--gopay">GO<span>PAY</span></span>
+                      <span class="of-logo of-logo--ovo">OVO</span>
+                      <span class="of-logo of-logo--dana">DANA</span>
+                      <span class="of-logo of-logo--shopeepay">shopee<span>pay</span></span>
+                    </span>
+                  </span>
+                  <div class="of-wallet-hint">Scan langsung dari aplikasi dompet digital Anda.</div>
+                </span>
+              </label>
+            </div>
+            <div class="err of-err"></div>
+          </fieldset>
+
+          <div class="of-summary" id="ofSummary">
+            <div class="of-sum-line"><span>Jumlah paket</span><b id="ofSumItems">0 item</b></div>
+            <div class="of-sum-line"><span>Subtotal</span><b id="ofSumSubtotal">Rp 0</b></div>
+            <div class="of-sum-line of-sum-line--total"><span>Total bayar</span><b id="ofSumTotal">Rp 0</b></div>
           </div>
 
-          <!-- ============ FORM ============ -->
-          <form class="form-card order-form" id="orderForm" novalidate>
-            <span class="form-kicker">data pemesan</span>
-            <h3 class="form-title">siapkan pesanan anda</h3>
+          <div class="of-actions">
+            <button type="submit" class="btn btn--primary of-submit" id="ofSubmit">kirim pesanan<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
+            <span class="form-note" id="ofNote">Pilih paket dan metode pembayaran terlebih dahulu.</span>
+          </div>
 
-            <div class="field">
-              <label for="oName">nama lengkap</label>
-              <input type="text" id="oName" name="name" required placeholder="Nama lengkap">
-              <div class="err"></div>
-            </div>
-
-            <div class="form-row form-row--mt">
-              <div class="field">
-                <label for="oPhone">telepon</label>
-                <input type="tel" id="oPhone" name="phone" required placeholder="0812-3456-7890">
-                <div class="err"></div>
-              </div>
-              <div class="field">
-                <label for="oEmail">email</label>
-                <input type="email" id="oEmail" name="email" required placeholder="nama@email.com">
-                <div class="err"></div>
-              </div>
-            </div>
-
-            <div class="form-row form-row--mt">
-              <div class="field">
-                <label for="oDate">tanggal</label>
-                <input type="date" id="oDate" name="date" required>
-                <div class="err"></div>
-              </div>
-              <div class="field">
-                <label for="oTime">waktu</label>
-                <select id="oTime" name="time" required>
-                  <option value="">pilih waktu</option>
-                </select>
-                <div class="err"></div>
-              </div>
-            </div>
-
-            <div class="form-row form-row--mt">
-              <div class="field">
-                <label for="oGuests">jumlah tamu</label>
-                <select id="oGuests" name="guests" required>
-                  <option value="">pilih jumlah</option>
-                  <option value="1">1 orang</option>
-                  <option value="2">2 orang</option>
-                  <option value="3">3 orang</option>
-                  <option value="4">4 orang</option>
-                  <option value="5">5 orang</option>
-                  <option value="6">6 orang</option>
-                  <option value="8">8 orang</option>
-                  <option value="10">10 orang</option>
-                </select>
-                <div class="err"></div>
-              </div>
-              <div class="field">
-                <label for="oService">layanan</label>
-                <select id="oService" name="service" required>
-                  <option value="dinein">makan di tempat</option>
-                  <option value="takeaway">bawa pulang</option>
-                  <option value="delivery">antar ke alamat</option>
-                </select>
-                <div class="err"></div>
-              </div>
-            </div>
-
-            <div class="field field--mt">
-              <label for="oNotes">catatan untuk kitchen</label>
-              <textarea id="oNotes" name="notes" placeholder="Alergi, level cabai, timing masak, permintaan khusus, dll."></textarea>
-              <div class="err"></div>
-            </div>
-
-            <div class="field field--mt">
-              <label for="oAddress">alamat pengantaran <span class="opt">— opsional, untuk antar ke alamat</span></label>
-              <input type="text" id="oAddress" name="address" placeholder="Jalan, nomor, kota">
-              <div class="field-hint">Wajib diisi jika memilih "antar ke alamat".</div>
-              <div class="err"></div>
-            </div>
-
-            <div class="form-actions order-actions">
-              <button type="submit" class="btn btn--primary" id="orderSubmit">kirim pesanan<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
-              <span class="form-note" id="orderNote">Keranjang masih kosong.</span>
-            </div>
-          </form>
-        </div>
+        </form>
       </div>
     </section>
 

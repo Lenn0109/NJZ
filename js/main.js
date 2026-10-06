@@ -154,207 +154,258 @@
     }, 3600);
   }
 
-  /* ---------- Order buttons → keranjang (cart) ---------- */
-  const cart = { items: [] };
-
-  const cartList = document.getElementById('cartList');
-  const cartEmpty = document.getElementById('cartEmpty');
-  const cartFoot = document.getElementById('cartFoot');
-  const cartBadge = document.getElementById('cartBadge');
-  const orderNote = document.getElementById('orderNote');
-  const cartSubtotal = document.getElementById('cartSubtotal');
-  const cartService = document.getElementById('cartService');
-  const cartTotal = document.getElementById('cartTotal');
-  const orderSubmit = document.getElementById('orderSubmit');
-
-  function rupiah(n) {
-    return 'Rp ' + Math.round(n).toLocaleString('id-ID');
-  }
-  function parseHarga(txt) {
-    return parseInt(String(txt).replace(/[^0-9]/g, ''), 10) || 0;
-  }
-
-  function renderCart() {
-    const n = cart.items.length;
-    const totalQty = cart.items.reduce(function (a, b) { return a + b.qty; }, 0);
-    const subtotal = cart.items.reduce(function (a, b) { return a + b.price * b.qty; }, 0);
-    const service = Math.round(subtotal * 0.1);
-
-    cartEmpty.hidden = n > 0;
-    cartList.hidden = n === 0;
-    cartFoot.hidden = n === 0;
-    cartBadge.textContent = totalQty + ' item';
-    cartSubtotal.textContent = rupiah(subtotal);
-    cartService.textContent = rupiah(service);
-    cartTotal.textContent = rupiah(subtotal + service);
-
-    if (n === 0) {
-      cartList.innerHTML = '';
-      orderNote.textContent = 'Keranjang masih kosong.';
-      orderSubmit.disabled = true;
-      return;
-    }
-    orderSubmit.disabled = false;
-    orderNote.textContent = totalQty + ' item · ' + rupiah(subtotal + service) + ' (termasuk layanan)';
-
-    cartList.innerHTML = cart.items.map(function (it, i) {
-      return '<li class="cart-item">' +
-        '<span class="cart-item-name">' + it.name + '</span>' +
-        '<span class="cart-item-price">' + rupiah(it.price) + '</span>' +
-        '<span class="cart-item-meta">' +
-          '<span class="cart-qty">' +
-            '<button type="button" data-act="dec" data-i="' + i + '" aria-label="Kurangi ' + it.name + '">&minus;</button>' +
-            '<span>' + it.qty + '</span>' +
-            '<button type="button" data-act="inc" data-i="' + i + '" aria-label="Tambah ' + it.name + '">+</button>' +
-          '</span>' +
-          '<span class="cart-item-sub">' + rupiah(it.price * it.qty) + '</span>' +
-          '<button type="button" class="cart-remove" data-act="del" data-i="' + i + '">hapus</button>' +
-        '</span>' +
-      '</li>';
-    }).join('');
-  }
-
-  /* tombol +/- / hapus di dalam keranjang (event delegation) */
-  if (cartList) {
-    cartList.addEventListener('click', function (e) {
-      const btn = e.target.closest('button[data-act]');
-      if (!btn) return;
-      const i = +btn.dataset.i;
-      const act = btn.dataset.act;
-      if (act === 'inc') cart.items[i].qty += 1;
-      else if (act === 'dec') {
-        cart.items[i].qty -= 1;
-        if (cart.items[i].qty <= 0) cart.items.splice(i, 1);
-      } else if (act === 'del') cart.items.splice(i, 1);
-      renderCart();
-    });
-  }
-
-  const cartClear = document.getElementById('cartClear');
-  if (cartClear) {
-    cartClear.addEventListener('click', function () {
-      cart.items = [];
-      renderCart();
-      toast('Keranjang dikosongkan', 'Semua item dihapus dari pesanan.');
-    });
-  }
-
-  /* tombol "tambah" di tabel menu */
+  /* ---------- Order buttons di tabel menu → toast ringan ---------- */
   document.querySelectorAll('.dish-order').forEach(function (btn) {
     btn.addEventListener('click', function () {
       const row = btn.closest('tr');
       if (!row) return;
       const cells = row.children;
       const name = cells[1] ? cells[1].textContent.trim() : 'menu';
-      const price = parseHarga(cells[3] ? cells[3].textContent : '0');
-
-      const found = cart.items.find(function (it) { return it.name === name; });
-      if (found) found.qty += 1;
-      else cart.items.push({ name: name, price: price, qty: 1 });
-
-      renderCart();
-      toast('Masuk keranjang', name + ' · qty ' + (found ? found.qty : 1));
+      const price = cells[3] ? cells[3].textContent.trim() : '';
+      toast('Masuk daftar pilihan', name + ' ' + price + ' — pilih di form pemesanan.');
       btn.classList.add('is-added');
       setTimeout(function () { btn.classList.remove('is-added'); }, 700);
     });
   });
 
-  renderCart();
-
-  /* ---------- Pesan: time select + validasi + submit ---------- */
+  /* ---------- Form pemesanan (#orderForm) ---------- */
   const orderForm = document.getElementById('orderForm');
   if (orderForm) {
-    const oDate = document.getElementById('oDate');
-    const oTime = document.getElementById('oTime');
-    const oService = document.getElementById('oService');
-    const oAddress = document.getElementById('oAddress');
+    const rupiah = function (n) { return 'Rp ' + Math.round(n).toLocaleString('id-ID'); };
+
+    const fName = document.getElementById('fName');
+    const fPhone = document.getElementById('fPhone');
+    const fDate = document.getElementById('fDate');
+    const fTime = document.getElementById('fTime');
+    const pkChecks = Array.prototype.slice.call(orderForm.querySelectorAll('input[type="checkbox"][name="paket[]"]'));
+    const payRadios = Array.prototype.slice.call(orderForm.querySelectorAll('input[type="radio"][name="pembayaran"]'));
+    const ofSumItems = document.getElementById('ofSumItems');
+    const ofSumSubtotal = document.getElementById('ofSumSubtotal');
+    const ofSumTotal = document.getElementById('ofSumTotal');
+    const ofNote = document.getElementById('ofNote');
+    const pkErr = orderForm.querySelectorAll('.of-err')[0];
+    const payErr = orderForm.querySelectorAll('.of-err')[1];
+
+    /* tanggal minimal hari ini */
     const todayISO = new Date().toISOString().split('T')[0];
-    oDate.min = todayISO;
-    oDate.value = todayISO;
+    fDate.min = todayISO;
 
-    /* isi opsi waktu dari jam buka, tiap 30 menit */
-    (function fillTimes() {
-      const slots = [];
-      function add(h, m) { slots.push(String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0')); }
-      for (let h = 10; h <= 21; h++) { add(h, 0); if (h < 21) add(h, 30); }
-      oTime.innerHTML = '<option value="">pilih waktu</option>' + slots.map(function (t) {
-        return '<option value="' + t + '">' + t + '</option>';
-      }).join('');
-    })();
-
-    function setOrderErr(input, msg) {
+    function setErr(input, msg) {
       const field = input.closest('.field');
+      if (!field) return;
       field.classList.toggle('is-invalid', Boolean(msg));
-      const err = field.querySelector('.err');
-      if (err) err.textContent = msg || '';
+      const box = field.querySelector('.err');
+      if (box) box.textContent = msg || '';
+      input.classList.toggle('is-error', Boolean(msg));
     }
 
-    const orderRules = {
-      oName: function (v) { return v.trim().length >= 2 ? '' : 'nama terlalu pendek'; },
-      oPhone: function (v) { return v.replace(/[^0-9]/g, '').length >= 9 ? '' : 'nomor telepon tidak valid'; },
-      oEmail: function (v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ? '' : 'masukkan email yang valid'; },
-      oDate: function (v) { return v ? '' : 'silakan pilih tanggal'; },
-      oTime: function (v) { return v ? '' : 'silakan pilih waktu'; },
-      oGuests: function (v) { return v ? '' : 'silakan pilih jumlah tamu'; },
-      oService: function (v) { return v ? '' : 'silakan pilih layanan'; },
-      oAddress: function (v) {
-        if (oService.value === 'delivery') return v.trim().length >= 8 ? '' : 'wajib isi alamat lengkap';
-        return '';
+    /* ---- validasi per-field (blur + ketik ulang) ---- */
+    const phoneRule = function (v) {
+      const d = v.replace(/[^0-9]/g, '');
+      return d.length >= 9 && d.length <= 15 ? '' : 'nomor hp tidak valid';
+    };
+    const fRules = {
+      fName: function (v) { return v.trim().length >= 2 ? '' : 'nama minimal 2 karakter'; },
+      fPhone: phoneRule,
+      fDate: function (v) { return v ? '' : 'silakan pilih tanggal booking'; },
+      fTime: function (v) {
+        if (!v.trim()) return '';
+        return /^([01]\d|2[0-3]):[0-5]\d$/.test(v.trim()) ? '' : 'format waktu HH:MM';
       }
     };
-
-    Object.keys(orderRules).forEach(function (id) {
+    Object.keys(fRules).forEach(function (id) {
       const input = document.getElementById(id);
-      input.addEventListener('blur', function () { setOrderErr(input, orderRules[id](input.value)); });
+      input.addEventListener('blur', function () { setErr(input, fRules[id](input.value)); });
       input.addEventListener('input', function () {
         if (input.closest('.field').classList.contains('is-invalid')) {
-          setOrderErr(input, orderRules[id](input.value));
+          setErr(input, fRules[id](input.value));
         }
-      });
-      input.addEventListener('change', function () {
-        if (id === 'oService') setOrderErr(oAddress, orderRules.oAddress(oAddress.value));
       });
     });
 
+    /* ---- checkbox + qty联动 ---- */
+    pkChecks.forEach(function (cb) {
+      const qty = orderForm.querySelector('.of-qty[data-for="' + cb.id + '"]');
+      cb.addEventListener('change', function () {
+        if (cb.checked) {
+          if (qty) {
+            qty.classList.remove('is-error');
+            if (!/^[1-9]\d*$/.test(qty.value.trim())) qty.value = '1';
+          }
+          toast('Paket dipilih', cb.dataset.name);
+        }
+        renderSummary();
+      });
+      if (qty) {
+        qty.addEventListener('input', function () {
+          qty.value = qty.value.replace(/[^0-9]/g, '');
+          qty.classList.remove('is-error');
+          renderSummary();
+        });
+      }
+    });
+
+    /* ---- ringkasan live ---- */
+    function selectedLines() {
+      const lines = [];
+      pkChecks.forEach(function (cb) {
+        if (!cb.checked) return;
+        const qty = orderForm.querySelector('.of-qty[data-for="' + cb.id + '"]');
+        let n = qty ? parseInt(qty.value, 10) : 1;
+        if (!n || n < 1) n = 1;
+        lines.push({
+          cat: cb.value.split(':')[0],
+          name: cb.dataset.name,
+          price: parseInt(cb.dataset.price, 10) || 0,
+          qty: n
+        });
+      });
+      return lines;
+    }
+
+    function renderSummary() {
+      const lines = selectedLines();
+      const totalQty = lines.reduce(function (a, b) { return a + b.qty; }, 0);
+      const sub = lines.reduce(function (a, b) { return a + b.price * b.qty; }, 0);
+      ofSumItems.textContent = totalQty + ' item';
+      ofSumSubtotal.textContent = rupiah(sub);
+      ofSumTotal.textContent = rupiah(sub);
+      if (lines.length === 0) {
+        ofNote.textContent = 'Pilih paket dan metode pembayaran terlebih dahulu.';
+      } else {
+        const byCat = {};
+        lines.forEach(function (l) { byCat[l.cat] = (byCat[l.cat] || 0) + l.qty; });
+        const parts = Object.keys(byCat).map(function (k) {
+          return k + ' ' + byCat[k];
+        });
+        ofNote.textContent = parts.join(' · ') + ' — total ' + rupiah(sub);
+      }
+    }
+
+    /* ---- radio pembayaran: fx kartu ---- */
+    payRadios.forEach(function (r) {
+      r.addEventListener('change', function () {
+        if (payErr) payErr.textContent = '';
+      });
+    });
+
+    /* ---- nomor kartu: auto-format + validasi live ---- */
+    const cardNo = orderForm.querySelector('.of-cardno');
+    const cardExp = orderForm.querySelector('input[name="kadaluarsa"]');
+    const cardCvv = orderForm.querySelector('input[name="cvv"]');
+    const cardRule = function (v) {
+      const d = v.replace(/[^0-9]/g, '');
+      if (!d) return '';
+      return d.length >= 13 && d.length <= 19 ? '' : 'nomor kartu 13-19 digit';
+    };
+    if (cardNo) {
+      cardNo.addEventListener('input', function () {
+        const d = cardNo.value.replace(/[^0-9]/g, '').slice(0, 19);
+        cardNo.value = d.replace(/(.{4})/g, '$1 ').trim();
+        cardNo.classList.toggle('is-error', Boolean(cardRule(cardNo.value)));
+      });
+      cardNo.addEventListener('blur', function () {
+        cardNo.classList.toggle('is-error', Boolean(cardRule(cardNo.value)));
+      });
+    }
+    if (cardExp) {
+      cardExp.addEventListener('input', function () {
+        const d = cardExp.value.replace(/[^0-9]/g, '').slice(0, 4);
+        cardExp.value = d.length > 2 ? d.slice(0, 2) + '/' + d.slice(2) : d;
+      });
+    }
+    if (cardCvv) {
+      cardCvv.addEventListener('input', function () {
+        cardCvv.value = cardCvv.value.replace(/[^0-9]/g, '').slice(0, 4);
+      });
+    }
+
+    /* ---- validasi & submit ---- */
     orderForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      if (cart.items.length === 0) {
-        toast('Keranjang kosong', 'Tambahkan minimal satu menu sebelum mengirim.');
-        return;
-      }
       let ok = true;
-      Object.keys(orderRules).forEach(function (id) {
-        const input = document.getElementById(id);
-        const msg = orderRules[id](input.value);
-        setOrderErr(input, msg);
-        if (msg) ok = false;
+
+      setErr(fName, fName.value.trim().length >= 2 ? '' : 'nama minimal 2 karakter');
+      if (fName.value.trim().length < 2) ok = false;
+
+      const digits = fPhone.value.replace(/[^0-9]/g, '');
+      const phoneErr = digits.length >= 9 && digits.length <= 15 ? '' : 'nomor hp tidak valid';
+      setErr(fPhone, phoneErr);
+      if (phoneErr) ok = false;
+
+      const dateErr = fDate.value ? '' : 'silakan pilih tanggal booking';
+      setErr(fDate, dateErr);
+      if (dateErr) ok = false;
+
+      /* paket minimal satu + qty valid */
+      const lines = selectedLines();
+      let anyChecked = pkChecks.some(function (c) { return c.checked; });
+      if (!anyChecked) {
+        if (pkErr) pkErr.textContent = 'pilih minimal satu paket';
+        ok = false;
+      } else if (pkErr) {
+        pkErr.textContent = '';
+      }
+      pkChecks.forEach(function (cb) {
+        const qty = orderForm.querySelector('.of-qty[data-for="' + cb.id + '"]');
+        if (!cb.checked || !qty) return;
+        const n = parseInt(qty.value, 10);
+        if (!n || n < 1) {
+          qty.classList.add('is-error');
+          ok = false;
+        }
       });
+
+      /* metode pembayaran + nomor kartu bila kartu dipilih */
+      const chosen = payRadios.find(function (r) { return r.checked; });
+      if (!chosen) {
+        if (payErr) payErr.textContent = 'pilih metode pembayaran';
+        ok = false;
+      } else {
+        if (payErr) payErr.textContent = '';
+        if (chosen.value === 'visa') {
+          const cardno = orderForm.querySelector('.of-cardno');
+          const cd = cardno.value.replace(/[^0-9]/g, '');
+          if (cd.length < 13 || cd.length > 19) {
+            cardno.classList.add('is-error');
+            ok = false;
+          } else {
+            cardno.classList.remove('is-error');
+          }
+        }
+      }
+
       if (!ok) {
-        toast('Periksa formulir', 'Silakan perbaiki kolom yang ditandai.');
-        const firstBad = orderForm.querySelector('.field.is-invalid input, .field.is-invalid select');
+        toast('Periksa formulir', 'Lengkapi data yang masih ditandai.');
+        const firstBad = orderForm.querySelector('.field.is-invalid input, .of-qty.is-error, .of-cardno.is-error');
         if (firstBad) firstBad.focus();
         return;
       }
 
-      /* nomor pesanan acak, format NJ-YYMMDD-XXX */
-      const d = new Date(oDate.value);
+      /* nomor pesanan acak: NJ-YYMMDD-XXX */
+      const d = new Date(fDate.value);
       const code = 'NJ-' + String(d.getFullYear()).slice(2) +
         String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0') + '-' +
         String(Math.floor(Math.random() * 900) + 100);
 
-      const totalQty = cart.items.reduce(function (a, b) { return a + b.qty; }, 0);
-      const subtotal = cart.items.reduce(function (a, b) { return a + b.price * b.qty; }, 0);
-      const total = subtotal + Math.round(subtotal * 0.1);
+      const totalQty = lines.reduce(function (a, b) { return a + b.qty; }, 0);
+      const sub = lines.reduce(function (a, b) { return a + b.price * b.qty; }, 0);
+      const payLabel = chosen.value === 'visa' ? 'kartu debit/kredit' : 'dompet digital';
 
-      toast('Pesanan terkonfirmasi', code + ' · ' + totalQty + ' item · ' + rupiah(total) + '. Kitchen sudah diberi tahu.');
+      toast(
+        'Pesanan terkonfirmasi',
+        code + ' · ' + fName.value.trim() + ' · ' + totalQty + ' item · ' +
+        rupiah(sub) + ' · ' + payLabel
+      );
 
-      cart.items = [];
-      renderCart();
       orderForm.reset();
-      oDate.value = todayISO;
-      if (window.__lenis) window.__lenis.scrollTo(orderForm, { offset: -120, duration: 1.2 });
+      fDate.value = todayISO;
+      renderSummary();
     });
+
+    renderSummary();
   }
+
 
   /* ---------- Promo video ---------- */
   const promo = document.getElementById('promoVideo');
