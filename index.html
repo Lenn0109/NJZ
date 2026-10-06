@@ -48,6 +48,7 @@
           <li><a href="#about" class="nav-link">tentang</a></li>
           <li><a href="#menu" class="nav-link">menu</a></li>
           <li><a href="#gallery" class="nav-link">galeri</a></li>
+          <li><a href="#pesan" class="nav-link">pesan</a></li>
           <li><a href="#contact" class="nav-link">kontak</a></li>
         </ul>
         <a href="#reserve" class="btn btn--primary nav-cta">reservasi</a>
@@ -186,12 +187,7 @@
           <a href="#menu" class="btn btn--ghost">menu lengkap<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
         </div>
 
-                <!-- [HAPUS] blok menu-list berbasis kartu (dish-card) — diganti struktur tabel per kategori di bawah -->
-        <!-- [TAMBAH] menu dalam bentuk tabel-tabel, satu tabel per kategori (main / salad / appetizer / soup) -->
-
         <div class="menu-tables" id="menuTables">
-
-          <!-- [TAMBAH] tabel kategori: hidangan utama -->
           <div class="menu-tgroup" data-cat="main">
             <h3 class="menu-tgroup-title">hidangan utama</h3>
             <div class="menu-twrap">
@@ -251,8 +247,6 @@
               </table>
             </div>
           </div>
-
-          <!-- [TAMBAH] tabel kategori: salad -->
           <div class="menu-tgroup" data-cat="salad">
             <h3 class="menu-tgroup-title">salad</h3>
             <div class="menu-twrap">
@@ -288,8 +282,6 @@
               </table>
             </div>
           </div>
-
-          <!-- [TAMBAH] tabel kategori: pembuka -->
           <div class="menu-tgroup" data-cat="appetizer">
             <h3 class="menu-tgroup-title">pembuka</h3>
             <div class="menu-twrap">
@@ -317,8 +309,6 @@
               </table>
             </div>
           </div>
-
-          <!-- [TAMBAH] tabel kategori: sup -->
           <div class="menu-tgroup" data-cat="soup">
             <h3 class="menu-tgroup-title">sup</h3>
             <div class="menu-twrap">
@@ -348,7 +338,7 @@
           </div>
 
         </div>
-        <!-- [TAMBAH] akhir blok tabel menu -->
+      </div>
     </section>
 
     <section id="gallery" class="section section--tight">
@@ -625,10 +615,145 @@
       </div>
     </section>
 
-    <section id="contact" class="section">
+    <section id="pesan" class="section section--cream">
       <div class="container">
         <div class="section-head">
           <span class="chapter">no. 07</span>
+          <span class="eyebrow">pesan &amp; bawa pulang</span>
+          <h2 class="section-title">pesan makanan anda</h2>
+          <p class="section-lead">
+            Pilih hidangan yang Anda suka, atur jumlahnya, lalu kirim pesanan. Kitchen kami mulai prepping begitu pesanan masuk.
+          </p>
+        </div>
+
+        <div class="order-grid">
+          <!-- ============ KERANJANG ============ -->
+          <div class="cart-panel">
+            <div class="cart-head">
+              <div>
+                <span class="cart-kicker">pesanan anda</span>
+                <h3 class="cart-title">keranjang</h3>
+              </div>
+              <span class="cart-badge" id="cartBadge">0 item</span>
+            </div>
+
+            <div class="cart-body" id="cartBody">
+              <div class="cart-empty" id="cartEmpty">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/>
+                </svg>
+                <p>Keranjang masih kosong.</p>
+                <a href="#menu" class="cart-jump">Lihat menu dulu<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+              </div>
+              <ul class="cart-list" id="cartList" hidden></ul>
+            </div>
+
+            <div class="cart-foot" id="cartFoot" hidden>
+              <div class="cart-line">
+                <span>Subtotal</span><b id="cartSubtotal">Rp 0</b>
+              </div>
+              <div class="cart-line cart-line--svc">
+                <span>Biaya layanan (10%)</span><b id="cartService">Rp 0</b>
+              </div>
+              <div class="cart-line cart-line--total">
+                <span>Total</span><b id="cartTotal">Rp 0</b>
+              </div>
+              <button type="button" class="btn btn--ghost cart-clear" id="cartClear">kosongkan</button>
+            </div>
+          </div>
+
+          <!-- ============ FORM ============ -->
+          <form class="form-card order-form" id="orderForm" novalidate>
+            <span class="form-kicker">data pemesan</span>
+            <h3 class="form-title">siapkan pesanan anda</h3>
+
+            <div class="field">
+              <label for="oName">nama lengkap</label>
+              <input type="text" id="oName" name="name" required placeholder="Nama lengkap">
+              <div class="err"></div>
+            </div>
+
+            <div class="form-row form-row--mt">
+              <div class="field">
+                <label for="oPhone">telepon</label>
+                <input type="tel" id="oPhone" name="phone" required placeholder="0812-3456-7890">
+                <div class="err"></div>
+              </div>
+              <div class="field">
+                <label for="oEmail">email</label>
+                <input type="email" id="oEmail" name="email" required placeholder="nama@email.com">
+                <div class="err"></div>
+              </div>
+            </div>
+
+            <div class="form-row form-row--mt">
+              <div class="field">
+                <label for="oDate">tanggal</label>
+                <input type="date" id="oDate" name="date" required>
+                <div class="err"></div>
+              </div>
+              <div class="field">
+                <label for="oTime">waktu</label>
+                <select id="oTime" name="time" required>
+                  <option value="">pilih waktu</option>
+                </select>
+                <div class="err"></div>
+              </div>
+            </div>
+
+            <div class="form-row form-row--mt">
+              <div class="field">
+                <label for="oGuests">jumlah tamu</label>
+                <select id="oGuests" name="guests" required>
+                  <option value="">pilih jumlah</option>
+                  <option value="1">1 orang</option>
+                  <option value="2">2 orang</option>
+                  <option value="3">3 orang</option>
+                  <option value="4">4 orang</option>
+                  <option value="5">5 orang</option>
+                  <option value="6">6 orang</option>
+                  <option value="8">8 orang</option>
+                  <option value="10">10 orang</option>
+                </select>
+                <div class="err"></div>
+              </div>
+              <div class="field">
+                <label for="oService">layanan</label>
+                <select id="oService" name="service" required>
+                  <option value="dinein">makan di tempat</option>
+                  <option value="takeaway">bawa pulang</option>
+                  <option value="delivery">antar ke alamat</option>
+                </select>
+                <div class="err"></div>
+              </div>
+            </div>
+
+            <div class="field field--mt">
+              <label for="oNotes">catatan untuk kitchen</label>
+              <textarea id="oNotes" name="notes" placeholder="Alergi, level cabai, timing masak, permintaan khusus, dll."></textarea>
+              <div class="err"></div>
+            </div>
+
+            <div class="field field--mt">
+              <label for="oAddress">alamat pengantaran <span class="opt">— opsional, untuk antar ke alamat</span></label>
+              <input type="text" id="oAddress" name="address" placeholder="Jalan, nomor, kota">
+              <div class="field-hint">Wajib diisi jika memilih "antar ke alamat".</div>
+              <div class="err"></div>
+            </div>
+
+            <div class="form-actions order-actions">
+              <button type="submit" class="btn btn--primary" id="orderSubmit">kirim pesanan<svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
+              <span class="form-note" id="orderNote">Keranjang masih kosong.</span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="container">
+        <div class="section-head">
+          <span class="chapter">no. 08</span>
           <span class="eyebrow">kunjungi kami</span>
           <h2 class="section-title">hubungi kami</h2>
           <p class="section-lead">
@@ -704,6 +829,7 @@
             <li><a href="#menu">menu</a></li>
             <li><a href="#gallery">galeri</a></li>
             <li><a href="#reserve">reservasi</a></li>
+            <li><a href="#pesan">pesan makanan</a></li>
             <li><a href="#contact">kontak</a></li>
           </ul>
         </div>
